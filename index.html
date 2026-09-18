@@ -1,0 +1,3956 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Fill 5S Ch Test Result from 26-27 6S Marks</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --border: #d0d5dd;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --green: #059669;
+      --green-dark: #047857;
+      --orange: #f59e0b;
+      --orange-dark: #d97706;
+      --red: #dc2626;
+      --blue-soft: #eff6ff;
+      --yellow-soft: #fffbeb;
+      --green-soft: #ecfdf5;
+      --red-soft: #fef2f2;
+      --code-bg: #111827;
+      --code-text: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Noto Sans TC",
+        "Microsoft JhengHei",
+        Arial,
+        sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      color: white;
+      padding: 34px 18px;
+    }
+
+    header .wrap,
+    main,
+    footer {
+      max-width: 1320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    header h1 {
+      margin: 0 0 8px 0;
+      font-size: clamp(1.45rem, 4vw, 2.35rem);
+      line-height: 1.18;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.96;
+      font-size: 1rem;
+    }
+
+    main {
+      padding: 22px 16px 60px;
+    }
+
+    footer {
+      color: var(--muted);
+      font-size: 0.92rem;
+      padding: 0 16px 32px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.25rem;
+    }
+
+    .card h3 {
+      margin-top: 20px;
+      margin-bottom: 8px;
+      font-size: 1.05rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 880px) {
+      .grid.two {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .grid.three {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+
+    label {
+      display: block;
+      font-weight: 750;
+      margin-bottom: 7px;
+    }
+
+    input[type="file"],
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 13px;
+      background: #ffffff;
+      font: inherit;
+    }
+
+    textarea {
+      min-height: 160px;
+      resize: vertical;
+      font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        "Liberation Mono",
+        monospace;
+      font-size: 0.9rem;
+    }
+
+    input[type="file"] {
+      border-style: dashed;
+      background: #f9fafb;
+    }
+
+    input[type="checkbox"] {
+      transform: scale(1.1);
+      margin-top: 6px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      margin: 11px 0;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: 0.94rem;
+      margin: 7px 0 0;
+    }
+
+    .note {
+      border-left: 4px solid var(--primary);
+      background: var(--blue-soft);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+    }
+
+    .warning-note {
+      border-left: 4px solid var(--orange);
+      background: var(--yellow-soft);
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin: 12px 0;
+    }
+
+    code {
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 2px 5px;
+      border-radius: 5px;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 11px 18px;
+      font-weight: 800;
+      cursor: pointer;
+      font-size: 0.96rem;
+      transition: 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button.primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    button.primary:hover {
+      background: var(--primary-dark);
+    }
+
+    button.green {
+      background: var(--green);
+      color: white;
+    }
+
+    button.green:hover {
+      background: var(--green-dark);
+    }
+
+    button.orange {
+      background: var(--orange);
+      color: #111827;
+    }
+
+    button.orange:hover {
+      background: var(--orange-dark);
+      color: white;
+    }
+
+    button.secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    button.secondary:hover {
+      background: #d1d5db;
+    }
+
+    button:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .status {
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #f9fafb;
+      margin-top: 16px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .status.ok {
+      background: var(--green-soft);
+      color: #064e3b;
+      border-color: #a7f3d0;
+    }
+
+    .status.warn {
+      background: var(--yellow-soft);
+      color: #78350f;
+      border-color: #fde68a;
+    }
+
+    .status.error {
+      background: var(--red-soft);
+      color: #7f1d1d;
+      border-color: #fecaca;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1080px;
+      font-size: 0.88rem;
+    }
+
+    th,
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #f3f4f6;
+      font-weight: 850;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .small {
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    pre {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 14px;
+      border-radius: 12px;
+      overflow-x: auto;
+      max-height: 480px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #dbeafe;
+      color: #1e3a8a;
+      font-size: 0.82rem;
+      font-weight: 800;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Two-file Tool：由 26-27 6S marks 自動填入 5S Ch test result 空白位</h1>
+      <p>
+        載入 source workbook 和 target workbook，從 1st / 2nd / 3rd assessment
+        抽取每位學生在五本書不同 chapter 的表現，然後一鍵輸出填好空白的新 Excel。
+      </p>
+    </div>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>一、選擇兩個 Excel 檔案</h2>
+
+      <div class="note">
+        <strong>Source：</strong><code>26-27 6S marks.xlsx</code><br />
+        <strong>Target：</strong><code>5S Ch test result (25-26).xlsx</code><br />
+        工具會用 source 的 assessment item-level data summarize，再填入 target 的空白 / ?? / NA cells。
+      </div>
+
+      <div class="grid two">
+        <div>
+          <label for="sourceFileInput">Source workbook：26-27 6S marks.xlsx</label>
+          <input id="sourceFileInput" type="file" accept=".xlsx,.xls,.xlsm,.csv" />
+          <p class="hint">
+            必須包含 <code>1st assessment</code>、<code>2nd assessment</code>、<code>3rd assessment</code> sheets。
+          </p>
+        </div>
+
+        <div>
+          <label for="targetFileInput">Target workbook：5S Ch test result (25-26).xlsx</label>
+          <input id="targetFileInput" type="file" accept=".xlsx,.xls,.xlsm" />
+          <p class="hint">
+            程式會在 target workbook 中自動尋找有 <code>Class</code> / <code>Number</code> / <code>Name</code> 的 sheet。
+          </p>
+        </div>
+      </div>
+
+      <h3>Source sheet 設定</h3>
+
+      <div class="grid two">
+        <div>
+          <label for="assessmentSheetNamesInput">Assessment sheet names</label>
+          <input
+            id="assessmentSheetNamesInput"
+            type="text"
+            value="1st assessment,2nd assessment,3rd assessment"
+          />
+          <p class="hint">
+            如 source workbook 的 assessment sheet 名稱不同，可在這裡修改，用 comma 分隔。
+          </p>
+        </div>
+
+        <div>
+          <label for="dailySheetNamesInput">Optional daily marks sheet names</label>
+          <input
+            id="dailySheetNamesInput"
+            type="text"
+            value="6S daily marks,5S daily marks"
+          />
+          <p class="hint">
+            預設不會使用 daily marks。只有勾選下面「同時用 daily marks 補充」才會用。
+          </p>
+        </div>
+      </div>
+
+      <h3>Target sheet 設定</h3>
+
+      <div>
+        <label for="targetSheetNamesInput">Target sheet names，留空 = 自動掃描全部 sheets</label>
+        <input
+          id="targetSheetNamesInput"
+          type="text"
+          value=""
+          placeholder="例如：Ch test result,Sheet1；留空即自動掃描"
+        />
+        <p class="hint">
+          如果 target workbook 有很多 unrelated sheets，可以在這裡指定要填的 sheet 名稱。
+        </p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>二、填入選項</h2>
+
+      <div class="grid three">
+        <div>
+          <label for="fillValueModeSelect">學生 cells 填入甚麼值？</label>
+          <select id="fillValueModeSelect">
+            <option value="score" selected>Raw score：源 assessment chapter 分數</option>
+            <option value="percentage">Percentage：百分比 0-100</option>
+            <option value="scaleToTargetFull">Scale to target full mark：按 target full mark 換算</option>
+          </select>
+          <p class="hint">
+            通常建議用 <code>Raw score</code>。如果 target column 的 full mark 固定而 source chapter full mark 不同，可改用 scale。
+          </p>
+        </div>
+
+        <div>
+          <label for="chapterMatchModeSelect">Chapter matching mode</label>
+          <select id="chapterMatchModeSelect">
+            <option value="exactThenCompatible" selected>Exact first，找不到才用 compatible group</option>
+            <option value="exact">Exact only</option>
+            <option value="compatible">Compatible group allowed</option>
+          </select>
+          <p class="hint">
+            例如 <code>Book 4 Circuit</code> 可 compatible 到 power / domestic electricity，但 exact first 較安全。
+          </p>
+        </div>
+
+        <div>
+          <label for="ambiguousModeSelect">同一 chapter 出現在多次 assessment 時</label>
+          <select id="ambiguousModeSelect">
+            <option value="largestFullLatest" selected>選 full mark 最大；如相同選較後 assessment</option>
+            <option value="latest">選較後 assessment</option>
+            <option value="earliest">選較早 assessment</option>
+            <option value="leave">不自動填，留待人工處理</option>
+          </select>
+          <p class="hint">
+            如果 target header 有明確寫 1st / 2nd / 3rd，會優先跟 target header。
+          </p>
+        </div>
+      </div>
+
+      <h3>基本勾選項</h3>
+
+      <div class="grid two">
+        <div>
+          <div class="checkbox-row">
+            <input id="includeMcqCheckbox" type="checkbox" checked />
+            <div>
+              <strong>包括 MCQ</strong>
+              <div class="small">
+                MCQ 會用 answer key 自動改分：答中 = full mark，答錯 = 0。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="includeSqCheckbox" type="checkbox" checked />
+            <div>
+              <strong>包括 SQ</strong>
+              <div class="small">
+                SQ 直接讀 item score。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="skipItemsWithNoStudentDataCheckbox" type="checkbox" checked />
+            <div>
+              <strong>忽略整條 item column 沒有任何學生資料的題目</strong>
+              <div class="small">
+                對 2nd assessment 這類沒有逐題 MCQ answer 的 sheet 特別重要，避免把空白 MCQ 題目計入 full mark。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="includeDailyMarksCheckbox" type="checkbox" />
+            <div>
+              <strong>同時用 6S / 5S daily marks 補充</strong>
+              <div class="small">
+                預設不勾。若你想同時填例如 <code>Radioactivity Ch 2 supp exe</code>，可勾選。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="checkbox-row">
+            <input id="absentAsZeroCheckbox" type="checkbox" />
+            <div>
+              <strong>ABS / absent 當作 0 分</strong>
+              <div class="small">
+                預設不勾。若不勾，缺席學生不會填分，只會在 audit 標記。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="unknownMcqAsWrongCheckbox" type="checkbox" checked />
+            <div>
+              <strong>MCQ 的 ? / ?? 當作答錯</strong>
+              <div class="small">
+                對 assessment MCQ answer 欄常見的 <code>?</code>，一般當 0 分處理。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="blankMcqAsWrongCheckbox" type="checkbox" checked />
+            <div>
+              <strong>個別 MCQ blank 當作答錯</strong>
+              <div class="small">
+                若整條 MCQ item column 全部學生都是 blank，仍會被「無學生資料」規則跳過。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="overwriteExistingCheckbox" type="checkbox" />
+            <div>
+              <strong>覆蓋已有數值 / 公式</strong>
+              <div class="small">
+                預設不勾。一般只填 target 的 blank / ?? / NA。除非你很確定，否則不要勾。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Target 填入範圍</h3>
+
+      <div class="grid two">
+        <div>
+          <div class="checkbox-row">
+            <input id="fillStudentRowsCheckbox" type="checkbox" checked />
+            <div>
+              <strong>填學生分數 cells</strong>
+              <div class="small">
+                對每位學生按姓名配對後填入 target column。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="fillFullRowsCheckbox" type="checkbox" checked />
+            <div>
+              <strong>填 Full / Full mark row</strong>
+              <div class="small">
+                若 target 有 <code>Full</code> row 且該 cell 空白，會填 source chapter full mark。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="checkbox-row">
+            <input id="fillStatsRowsCheckbox" type="checkbox" />
+            <div>
+              <strong>填 average / max / min / pass % rows</strong>
+              <div class="small">
+                預設不勾。若勾選，會根據填入後的學生分數計算。Pass % 以 50% 為 pass threshold。
+              </div>
+            </div>
+          </div>
+
+          <div class="checkbox-row">
+            <input id="keepDetailedChapterCheckbox" type="checkbox" checked />
+            <div>
+              <strong>保留 detailed chapter</strong>
+              <div class="small">
+                例如 <code>Book 2 Projectile motion</code> 和 <code>Book 2 Circular motion</code> 分開計。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="warning-note">
+        <strong>建議流程：</strong>
+        第一次不要勾 <code>覆蓋已有數值 / 公式</code>，先生成 filled Excel 和 audit CSV，確認 mapping 正確後再正式使用。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>三、Mapping / Normalisation 設定</h2>
+
+      <h3>Student alias mapping</h3>
+      <p class="hint">
+        格式：<code>target name =&gt; source assessment name</code>。如果 target 用新名，source assessment 用舊名，可在這裡補充。
+      </p>
+
+      <textarea id="studentAliasInput">歐聿之 => 歐錦標</textarea>
+
+      <h3>Target column manual mapping</h3>
+      <p class="hint">
+        格式：<code>target keyword =&gt; source sheet | source chapter</code>。<br />
+        可用 <code>*</code> 表示 source chapter 由 target column header / Book row 自動判斷。<br />
+        例如：<code>1st assessment =&gt; 1st assessment | *</code>
+      </p>
+
+      <textarea id="manualMappingInput">1st assessment => 1st assessment | *
+2nd assessment => 2nd assessment | *
+3rd assessment => 3rd assessment | *
+t1a2 => 1st assessment | *
+t2a2 => 2nd assessment | *
+t3a2 => 3rd assessment | *
+
+test projectile motion => 1st assessment | Book 2 Projectile motion
+supp exe projectile motion => 1st assessment | Book 2 Projectile motion
+test circular motion => 1st assessment | Book 2 Circular motion
+supp exe circular => 1st assessment | Book 2 Circular motion
+test on gas law => 1st assessment | Book 1 Gases
+gas law => 1st assessment | Book 1 Gases
+
+test kinetic theory => 2nd assessment | Book 1 Kinetic theory
+test electrostatics => 2nd assessment | Book 4 Electrostatics
+open book test circuit => 2nd assessment | Book 4 Circuit
+test circuit => 2nd assessment | Book 4 Circuit
+easter hw (circuit) => 2nd assessment | Book 4 Circuit
+
+quiz magnetic field => 3rd assessment | Book 4 Magnetic field
+quiz magnetic force => 3rd assessment | Book 4 Magnetic force
+radioactivity supp exe => 3rd assessment | Book 5 Radioactivity Ch 1
+
+radioactivity ch 2 supp exe => 6S daily marks | Book 5 Radioactive decay
+radioactivity ch 2 => 6S daily marks | Book 5 Radioactive decay</textarea>
+
+      <h3>Chapter normalisation rules</h3>
+      <p class="hint">
+        格式：<code>keyword =&gt; normalised chapter</code>。程式會大小寫不敏感 matching，較長 keyword 會優先。
+      </p>
+
+      <textarea id="normalisationRulesInput">radioactivity ch 2 supp exe => Book 5 Radioactive decay
+radioactivity ch 2 => Book 5 Radioactive decay
+radioactive decay => Book 5 Radioactive decay
+book 5 radioactive decay => Book 5 Radioactive decay
+book 5 ch1 radiation => Book 5 Radioactivity Ch 1
+book 5 ch 1 radiation => Book 5 Radioactivity Ch 1
+book 5 ch1 radioactivity => Book 5 Radioactivity Ch 1
+book 5 ch 1 radioactivity => Book 5 Radioactivity Ch 1
+book 5 radioactivity => Book 5 Radioactivity Ch 1
+alpha beta decay => Book 5 Radioactivity Ch 1
+α/β decay => Book 5 Radioactivity Ch 1
+penetrating power => Book 5 Radioactivity Ch 1
+deflection of radiation => Book 5 Radioactivity Ch 1
+
+book 1 heat => Book 1 Heat
+temperature-time graph => Book 1 Heat
+temperature time graph => Book 1 Heat
+specific heat capacity => Book 1 Heat
+heat capacity => Book 1 Heat
+change of state => Book 1 Heat
+transfer process of heat => Book 1 Heat
+emitters/absorbers => Book 1 Heat
+resistance thermometer => Book 1 Heat
+method of mixtures => Book 1 Heat
+
+book 1 gases => Book 1 Gases
+book 1 gas law => Book 1 Gases
+gas law exchange gas problem => Book 1 Gases
+ideal gas law => Book 1 Gases
+pressure-volume graph => Book 1 Gases
+number of moles => Book 1 Gases
+number of mole => Book 1 Gases
+gas law => Book 1 Gases
+
+book 1 kinetic theory => Book 1 Kinetic theory
+kinetic theory => Book 1 Kinetic theory
+root-mean-square => Book 1 Kinetic theory
+root mean square => Book 1 Kinetic theory
+rms speed => Book 1 Kinetic theory
+
+book 2 projectile motion => Book 2 Projectile motion
+projectile motion => Book 2 Projectile motion
+book 2 circular motion => Book 2 Circular motion
+book 2 circuitlar motion => Book 2 Circular motion
+circuitlar motion => Book 2 Circular motion
+circular motion => Book 2 Circular motion
+book 2 gravitation => Book 2 Gravitation
+book 2 gravitational field => Book 2 Gravitation
+gravitational field => Book 2 Gravitation
+gravitation => Book 2 Gravitation
+kepler => Book 2 Gravitation
+orbits => Book 2 Gravitation
+book 2 force & motion => Book 2 Force & Motion
+book 2 force and motion => Book 2 Force & Motion
+newton's law => Book 2 Force & Motion
+newton => Book 2 Force & Motion
+forces on incline => Book 2 Force & Motion
+inclined plane => Book 2 Force & Motion
+normal reaction => Book 2 Force & Motion
+connected body => Book 2 Force & Motion
+equilibrium => Book 2 Force & Motion
+moments => Book 2 Force & Motion
+terminal velocity => Book 2 Force & Motion
+velocity-time graph => Book 2 Motion graph
+displacement time graph => Book 2 Motion graph
+motion graph => Book 2 Motion graph
+equation of motion => Book 2 Force & Motion
+book 2 momentum => Book 2 Momentum
+conservation of momentum => Book 2 Momentum
+momentum => Book 2 Momentum
+force-time graph => Book 2 Momentum
+book 2 energy => Book 2 Energy
+mechanical energy => Book 2 Energy
+energy => Book 2 Energy
+
+book 3a lens => Book 3A Lens
+convex lens => Book 3A Lens
+concave lens => Book 3A Lens
+focal length => Book 3A Lens
+magnification => Book 3A Lens
+lens => Book 3A Lens
+book 3a reflection and refraction => Book 3A Reflection and Refraction
+book 3a reflection => Book 3A Reflection and Refraction
+book 3a refraction => Book 3A Reflection and Refraction
+total internal reflection => Book 3A Reflection and Refraction
+critical angle => Book 3A Reflection and Refraction
+mirror => Book 3A Reflection and Refraction
+refraction => Book 3A Reflection and Refraction
+reflection => Book 3A Reflection and Refraction
+book 3b diffraction grating => Book 3B Diffraction grating
+diffraction grating => Book 3B Diffraction grating
+double slit => Book 3B Diffraction grating
+diffraction + interference => Book 3B Diffraction grating
+diffraction and interference => Book 3B Diffraction grating
+book 3b wave motion => Book 3B Wave motion
+stationary waves => Book 3B Wave motion
+superposition => Book 3B Wave motion
+longitudinal wave => Book 3B Wave motion
+diffraction of sound => Book 3B Wave motion
+wave motion => Book 3B Wave motion
+
+book 4 electrostatics => Book 4 Electrostatics
+charging => Book 4 Electrostatics
+coulomb's law => Book 4 Electrostatics
+electrostatics force => Book 4 Electrostatics
+electrostatic force => Book 4 Electrostatics
+electrostatics => Book 4 Electrostatics
+book 4 electric field => Book 4 Electric field
+electric field lines => Book 4 Electric field
+electric field strength => Book 4 Electric field
+electric field => Book 4 Electric field
+book 4 circuit => Book 4 Circuit
+resistor network => Book 4 Circuit
+equivalent resistance => Book 4 Circuit
+brightness change => Book 4 Circuit
+resistance & resistivity => Book 4 Circuit
+resistance and resistivity => Book 4 Circuit
+circuit => Book 4 Circuit
+domestic electricity => Book 4 Domestic electricity
+book 4 domestic electricity => Book 4 Domestic electricity
+power & resistance => Book 4 Power and resistance
+power and resistance => Book 4 Power and resistance
+power & voltage => Book 4 Power and resistance
+power and voltage => Book 4 Power and resistance
+book 4 magnetic field and force => Book 4 Magnetic field and force
+book 4 magnetic field & force => Book 4 Magnetic field and force
+magnetic field & force => Book 4 Magnetic field and force
+magnetic field and force => Book 4 Magnetic field and force
+book 4 magnetic field => Book 4 Magnetic field
+magetic field => Book 4 Magnetic field
+magnetic field => Book 4 Magnetic field
+book 4 magnetic force => Book 4 Magnetic force
+force between parallel currents => Book 4 Magnetic force
+force on current loop => Book 4 Magnetic force
+velocity selector => Book 4 Magnetic force
+magnetic force => Book 4 Magnetic force
+book 4 e&m induction => Book 4 E&M Induction
+book 4 em induction => Book 4 E&M Induction
+motional emf => Book 4 E&M Induction
+changing flux => Book 4 E&M Induction
+induction => Book 4 E&M Induction
+application of em wave => Book 4 Application of EM wave
+application of electromagnetic wave => Book 4 Application of EM wave</textarea>
+
+      <div class="button-row">
+        <button id="runButton" class="primary">
+          一鍵填入 target workbook 並產生新 Excel
+        </button>
+
+        <button id="resetButton" class="secondary">
+          重設
+        </button>
+      </div>
+
+      <div id="statusBox" class="status">
+        尚未讀取檔案。
+      </div>
+    </section>
+
+    <section id="downloadCard" class="card hidden">
+      <h2>四、下載結果</h2>
+
+      <div class="button-row">
+        <button id="downloadExcelButton" class="green">
+          下載填好空白的新 Excel
+        </button>
+
+        <button id="downloadFillAuditButton" class="orange">
+          下載 fill audit CSV
+        </button>
+
+        <button id="downloadSourceSummaryButton" class="secondary">
+          下載 source chapter summary CSV
+        </button>
+
+        <button id="downloadTargetMappingButton" class="secondary">
+          下載 target column mapping CSV
+        </button>
+
+        <button id="downloadSourceItemAuditButton" class="secondary">
+          下載 source item audit CSV
+        </button>
+      </div>
+
+      <p class="hint">
+        建議先開 <code>fill_audit.csv</code> 和 <code>target_column_mapping.csv</code> 檢查每一欄是否 map 到正確 assessment / chapter。
+      </p>
+    </section>
+
+    <section id="targetMappingCard" class="card hidden">
+      <h2>五、Target Column Mapping Preview</h2>
+      <p class="small">
+        顯示 target 每一個 column 被推斷要由 source 哪一個 assessment / chapter 填。只顯示前 160 行。
+      </p>
+      <div id="targetMappingPreview"></div>
+    </section>
+
+    <section id="fillAuditCard" class="card hidden">
+      <h2>六、Fill Audit Preview</h2>
+      <p class="small">
+        顯示填入 / 跳過 / unmatched cells 的紀錄。只顯示前 220 行。
+      </p>
+      <div id="fillAuditPreview"></div>
+    </section>
+
+    <section id="sourceSummaryCard" class="card hidden">
+      <h2>七、Source Chapter Summary Preview</h2>
+      <p class="small">
+        從 source assessment 抽取後，每個學生 × assessment × chapter 的 summary。只顯示前 160 行。
+      </p>
+      <div id="sourceSummaryPreview"></div>
+    </section>
+
+    <section id="sourceItemAuditCard" class="card hidden">
+      <h2>八、Source Item Audit Preview</h2>
+      <p class="small">
+        顯示 source 每一條 item column 如何被分類。只顯示前 160 行。
+      </p>
+      <div id="sourceItemAuditPreview"></div>
+    </section>
+
+    <section id="logCard" class="card hidden">
+      <h2>九、處理紀錄 / 警告</h2>
+      <pre id="logBox"></pre>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      本工具在瀏覽器本機處理 Excel，不會上傳學生資料。若學校網絡封鎖 CDN，可下載 SheetJS 後改成本地引用。
+    </p>
+  </footer>
+
+  <script>
+    "use strict";
+
+    const SOURCE_SUMMARY_HEADERS = [
+      "Source Sheet",
+      "Class",
+      "Number",
+      "Name",
+      "Assessment",
+      "Book",
+      "Chapter",
+      "Score",
+      "Full Mark",
+      "Percentage",
+      "Items Included",
+      "Item Count",
+      "Status"
+    ];
+
+    const SOURCE_ITEM_AUDIT_HEADERS = [
+      "Source Sheet",
+      "Column",
+      "Question Type",
+      "Header",
+      "Remark",
+      "Key",
+      "Raw Item Category",
+      "Normalised Book",
+      "Normalised Chapter",
+      "Full Mark",
+      "Use Item",
+      "Status"
+    ];
+
+    const TARGET_MAPPING_HEADERS = [
+      "Target Sheet",
+      "Column",
+      "Target Header",
+      "Target Book",
+      "Target Context",
+      "Manual Mapping",
+      "Inferred Assessment",
+      "Inferred Chapter",
+      "Resolved Source Sheet",
+      "Resolved Source Chapters",
+      "Source Full Mark",
+      "Chapter Match Mode Used",
+      "Match Status",
+      "Student Cells Considered",
+      "Student Cells Filled",
+      "Full Row Filled",
+      "Stats Cells Filled"
+    ];
+
+    const FILL_AUDIT_HEADERS = [
+      "Action",
+      "Target Sheet",
+      "Cell",
+      "Row Type",
+      "Class",
+      "Number",
+      "Name",
+      "Target Header",
+      "Target Book",
+      "Resolved Source Sheet",
+      "Resolved Source Chapters",
+      "Old Value",
+      "New Value",
+      "Source Score",
+      "Source Full Mark",
+      "Source Percentage",
+      "Status",
+      "Notes"
+    ];
+
+    let state = {
+      sourceFileName: "",
+      targetFileName: "",
+      filledWorkbook: null,
+      filledWorkbookArrayBuffer: null,
+      sourceSummaryRows: [],
+      sourceItemAuditRows: [],
+      targetMappingRows: [],
+      fillAuditRows: [],
+      sourceSummaryCsv: "",
+      sourceItemAuditCsv: "",
+      targetMappingCsv: "",
+      fillAuditCsv: "",
+      logs: []
+    };
+
+    function byId(id) {
+      return document.getElementById(id);
+    }
+
+    function setStatus(message, type) {
+      const box = byId("statusBox");
+      box.textContent = message;
+      box.classList.remove("ok", "warn", "error");
+
+      if (type) {
+        box.classList.add(type);
+      }
+    }
+
+    function clean(value) {
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      return String(value).trim().replace(/\s+/g, " ");
+    }
+
+    function lowerClean(value) {
+      return clean(value).toLowerCase();
+    }
+
+    function normaliseName(value) {
+      return clean(value)
+        .normalize("NFKC")
+        .replace(/\s+/g, "")
+        .toLowerCase();
+    }
+
+    function isAbs(value) {
+      const s = lowerClean(value);
+      return s === "abs" || s === "absent" || s === "absence";
+    }
+
+    function isUnknown(value) {
+      const s = lowerClean(value);
+      return (
+        s === "?" ||
+        s === "??" ||
+        s === "na" ||
+        s === "n/a" ||
+        s === "/" ||
+        s === "-"
+      );
+    }
+
+    function isBlankLikeValue(value) {
+      const s = clean(value);
+      return s === "" || isUnknown(s);
+    }
+
+    function safeArithmeticFormulaEval(value) {
+      const s = clean(value);
+
+      if (!s.startsWith("=")) {
+        return null;
+      }
+
+      const expr = s.slice(1).trim();
+
+      if (!/^[0-9+\-*/().\s]+$/.test(expr)) {
+        return null;
+      }
+
+      try {
+        const result = Function('"use strict"; return (' + expr + ");")();
+
+        if (Number.isFinite(result)) {
+          return Number(result);
+        }
+
+        return null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function toNumber(value) {
+      if (value === null || value === undefined) {
+        return null;
+      }
+
+      if (typeof value === "number") {
+        return Number.isFinite(value) ? value : null;
+      }
+
+      if (typeof value === "boolean") {
+        return null;
+      }
+
+      const s = clean(value);
+
+      if (s === "" || isAbs(s) || isUnknown(s)) {
+        return null;
+      }
+
+      if (s.startsWith("=")) {
+        return safeArithmeticFormulaEval(s);
+      }
+
+      const n = Number(s.replace(/,/g, ""));
+
+      return Number.isFinite(n) ? n : null;
+    }
+
+    function roundNumber(value, decimalPlaces) {
+      if (value === null || value === undefined || value === "") {
+        return "";
+      }
+
+      const n = Number(value);
+
+      if (!Number.isFinite(n)) {
+        return "";
+      }
+
+      const factor = Math.pow(10, decimalPlaces);
+      return Math.round((n + Number.EPSILON) * factor) / factor;
+    }
+
+    function fmt(value, decimalPlaces) {
+      if (value === null || value === undefined || value === "") {
+        return "";
+      }
+
+      const n = Number(value);
+
+      if (!Number.isFinite(n)) {
+        return String(value);
+      }
+
+      if (Math.abs(n - Math.round(n)) < 1e-9) {
+        return String(Math.round(n));
+      }
+
+      return n.toFixed(decimalPlaces).replace(/0+$/, "").replace(/\.$/, "");
+    }
+
+    function percent(score, fullMark) {
+      const s = toNumber(score);
+      const f = toNumber(fullMark);
+
+      if (s === null || f === null || f === 0) {
+        return "";
+      }
+
+      return roundNumber((s / f) * 100, 2);
+    }
+
+    function escapeCsvCell(value) {
+      if (value === null || value === undefined) {
+        return "";
+      }
+
+      const s = String(value);
+
+      if (/[",\r\n]/.test(s)) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+
+      return s;
+    }
+
+    function rowsToCsv(rows, headers) {
+      const lines = [];
+      lines.push(headers.map(escapeCsvCell).join(","));
+
+      for (const row of rows) {
+        lines.push(headers.map((h) => escapeCsvCell(row[h])).join(","));
+      }
+
+      return lines.join("\r\n");
+    }
+
+    function downloadTextFile(filename, text) {
+      const blob = new Blob(["\uFEFF", text], {
+        type: "text/csv;charset=utf-8;"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+
+      document.body.appendChild(link);
+      link.click();
+
+      window.setTimeout(() => {
+        URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+      }, 0);
+    }
+
+    function downloadArrayBuffer(filename, arrayBuffer) {
+      const blob = new Blob([arrayBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+      });
+
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = url;
+      link.download = filename;
+
+      document.body.appendChild(link);
+      link.click();
+
+      window.setTimeout(() => {
+        URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+      }, 0);
+    }
+
+    function resetStateOnly() {
+      state = {
+        sourceFileName: "",
+        targetFileName: "",
+        filledWorkbook: null,
+        filledWorkbookArrayBuffer: null,
+        sourceSummaryRows: [],
+        sourceItemAuditRows: [],
+        targetMappingRows: [],
+        fillAuditRows: [],
+        sourceSummaryCsv: "",
+        sourceItemAuditCsv: "",
+        targetMappingCsv: "",
+        fillAuditCsv: "",
+        logs: []
+      };
+
+      byId("downloadCard").classList.add("hidden");
+      byId("targetMappingCard").classList.add("hidden");
+      byId("fillAuditCard").classList.add("hidden");
+      byId("sourceSummaryCard").classList.add("hidden");
+      byId("sourceItemAuditCard").classList.add("hidden");
+      byId("logCard").classList.add("hidden");
+
+      byId("targetMappingPreview").innerHTML = "";
+      byId("fillAuditPreview").innerHTML = "";
+      byId("sourceSummaryPreview").innerHTML = "";
+      byId("sourceItemAuditPreview").innerHTML = "";
+      byId("logBox").textContent = "";
+    }
+
+    function getRange(ws) {
+      if (!ws || !ws["!ref"]) {
+        return {
+          s: { r: 0, c: 0 },
+          e: { r: 0, c: 0 }
+        };
+      }
+
+      return XLSX.utils.decode_range(ws["!ref"]);
+    }
+
+    function getCellObject(ws, r, c) {
+      const address = XLSX.utils.encode_cell({ r, c });
+      return ws[address] || null;
+    }
+
+    function getCellValue(ws, r, c) {
+      const cell = getCellObject(ws, r, c);
+
+      if (!cell) {
+        return "";
+      }
+
+      if (cell.v !== undefined && cell.v !== null) {
+        return cell.v;
+      }
+
+      if (cell.w !== undefined && cell.w !== null) {
+        return cell.w;
+      }
+
+      if (cell.f !== undefined && cell.f !== null && cell.f !== "") {
+        return "=" + cell.f;
+      }
+
+      return "";
+    }
+
+    function getCellDisplayValue(ws, r, c) {
+      const cell = getCellObject(ws, r, c);
+
+      if (!cell) {
+        return "";
+      }
+
+      if (cell.v !== undefined && cell.v !== null) {
+        return cell.v;
+      }
+
+      if (cell.w !== undefined && cell.w !== null) {
+        return cell.w;
+      }
+
+      if (cell.f !== undefined && cell.f !== null && cell.f !== "") {
+        return "=" + cell.f;
+      }
+
+      return "";
+    }
+
+    function ensureRangeIncludes(ws, r, c) {
+      if (!ws["!ref"]) {
+        ws["!ref"] = XLSX.utils.encode_range({
+          s: { r, c },
+          e: { r, c }
+        });
+        return;
+      }
+
+      const range = XLSX.utils.decode_range(ws["!ref"]);
+
+      if (r < range.s.r) {
+        range.s.r = r;
+      }
+
+      if (c < range.s.c) {
+        range.s.c = c;
+      }
+
+      if (r > range.e.r) {
+        range.e.r = r;
+      }
+
+      if (c > range.e.c) {
+        range.e.c = c;
+      }
+
+      ws["!ref"] = XLSX.utils.encode_range(range);
+    }
+
+    function setCellValue(ws, r, c, value) {
+      const address = XLSX.utils.encode_cell({ r, c });
+      const oldCell = ws[address] || {};
+      const newCell = Object.assign({}, oldCell);
+
+      delete newCell.f;
+      delete newCell.w;
+      delete newCell.h;
+      delete newCell.r;
+
+      if (typeof value === "number" && Number.isFinite(value)) {
+        newCell.t = "n";
+        newCell.v = value;
+      } else {
+        newCell.t = "s";
+        newCell.v = value === null || value === undefined ? "" : String(value);
+      }
+
+      ws[address] = newCell;
+      ensureRangeIncludes(ws, r, c);
+    }
+
+    function isCellFillable(ws, r, c, overwriteExisting) {
+      const cell = getCellObject(ws, r, c);
+
+      if (overwriteExisting) {
+        return true;
+      }
+
+      if (!cell) {
+        return true;
+      }
+
+      if (cell.f !== undefined && cell.f !== null && cell.f !== "") {
+        return false;
+      }
+
+      return isBlankLikeValue(getCellValue(ws, r, c));
+    }
+
+    function colLetter(c) {
+      return XLSX.utils.encode_col(c);
+    }
+
+    function cellAddress(r, c) {
+      return XLSX.utils.encode_cell({ r, c });
+    }
+
+    function parseListInput(value) {
+      return String(value || "")
+        .split(",")
+        .map((x) => clean(x))
+        .filter(Boolean);
+    }
+
+    function findRowContainingExact(ws, text) {
+      const range = getRange(ws);
+      const target = lowerClean(text);
+
+      for (let r = range.s.r; r <= range.e.r; r++) {
+        for (let c = range.s.c; c <= range.e.c; c++) {
+          if (lowerClean(getCellValue(ws, r, c)) === target) {
+            return r;
+          }
+        }
+      }
+
+      return -1;
+    }
+
+    function findHeaderInfo(ws) {
+      const range = getRange(ws);
+
+      for (let r = range.s.r; r <= range.e.r; r++) {
+        let classCol = -1;
+        let noCol = -1;
+        let nameCol = -1;
+        let itemCol = -1;
+
+        for (let c = range.s.c; c <= range.e.c; c++) {
+          const s = lowerClean(getCellValue(ws, r, c));
+
+          if (s === "class" || s === "cls") {
+            classCol = c;
+          }
+
+          if (
+            s === "stud_no" ||
+            s === "student no" ||
+            s === "student number" ||
+            s === "number" ||
+            s === "no." ||
+            s === "no"
+          ) {
+            noCol = c;
+          }
+
+          if (
+            s === "stud_name" ||
+            s === "student name" ||
+            s === "name"
+          ) {
+            nameCol = c;
+          }
+
+          if (s === "item") {
+            itemCol = c;
+          }
+        }
+
+        if (noCol >= 0 && nameCol >= 0) {
+          return {
+            row: r,
+            classCol,
+            noCol,
+            nameCol,
+            itemCol
+          };
+        }
+      }
+
+      return null;
+    }
+
+    function rowContainsAnyLabel(ws, r, labels) {
+      const range = getRange(ws);
+      const labelSet = new Set(labels.map((x) => lowerClean(x)));
+
+      for (let c = range.s.c; c <= range.e.c; c++) {
+        const s = lowerClean(getCellValue(ws, r, c));
+
+        if (labelSet.has(s)) {
+          return s;
+        }
+      }
+
+      return "";
+    }
+
+    function getFirstLabelInRow(ws, r) {
+      const range = getRange(ws);
+
+      for (let c = range.s.c; c <= Math.min(range.e.c, range.s.c + 12); c++) {
+        const s = lowerClean(getCellValue(ws, r, c));
+
+        if (s) {
+          return s;
+        }
+      }
+
+      return "";
+    }
+
+    function isSummaryOrLabelText(value) {
+      const s = lowerClean(value);
+
+      return (
+        s === "full" ||
+        s === "full mark" ||
+        s === "full_mark" ||
+        s === "book" ||
+        s === "average" ||
+        s === "avaerage" ||
+        s === "avg" ||
+        s === "max" ||
+        s === "min" ||
+        s === "pass %" ||
+        s === "pass%" ||
+        s === "passing" ||
+        s === "correct" ||
+        s === "incorrect" ||
+        s === "s.d." ||
+        s === "sd" ||
+        s === "distractor" ||
+        s === "highest" ||
+        s === "lowest"
+      );
+    }
+
+    function parseNormalisationRules(text) {
+      const rules = [];
+      const lines = String(text || "").split(/\r?\n/);
+
+      for (const line of lines) {
+        const trimmed = clean(line);
+
+        if (!trimmed || trimmed.startsWith("#")) {
+          continue;
+        }
+
+        const parts = trimmed.split("=>");
+
+        if (parts.length < 2) {
+          continue;
+        }
+
+        const keyword = lowerClean(parts[0]);
+        const chapter = clean(parts.slice(1).join("=>"));
+
+        if (keyword && chapter) {
+          rules.push({
+            keyword,
+            chapter
+          });
+        }
+      }
+
+      rules.sort((a, b) => b.keyword.length - a.keyword.length);
+
+      return rules;
+    }
+
+    function parseStudentAliases(text) {
+      const map = new Map();
+      const lines = String(text || "").split(/\r?\n/);
+
+      for (const line of lines) {
+        const trimmed = clean(line);
+
+        if (!trimmed || trimmed.startsWith("#")) {
+          continue;
+        }
+
+        const parts = trimmed.split("=>");
+
+        if (parts.length < 2) {
+          continue;
+        }
+
+        const targetName = clean(parts[0]);
+        const sourceName = clean(parts.slice(1).join("=>"));
+
+        if (targetName && sourceName) {
+          map.set(normaliseName(targetName), sourceName);
+        }
+      }
+
+      return map;
+    }
+
+    function parseManualMappings(text) {
+      const mappings = [];
+      const lines = String(text || "").split(/\r?\n/);
+
+      for (const line of lines) {
+        const trimmed = clean(line);
+
+        if (!trimmed || trimmed.startsWith("#")) {
+          continue;
+        }
+
+        const parts = trimmed.split("=>");
+
+        if (parts.length < 2) {
+          continue;
+        }
+
+        const keyword = lowerClean(parts[0]);
+        const rhs = clean(parts.slice(1).join("=>"));
+
+        if (!keyword || !rhs) {
+          continue;
+        }
+
+        const rhsParts = rhs.split("|").map((x) => clean(x));
+        let assessment = "AUTO";
+        let chaptersText = "";
+
+        if (rhsParts.length === 1) {
+          chaptersText = rhsParts[0];
+        } else {
+          assessment = rhsParts[0] || "AUTO";
+          chaptersText = rhsParts.slice(1).join("|");
+        }
+
+        const chapters = chaptersText
+          .split(/[;+]/)
+          .map((x) => clean(x))
+          .filter(Boolean);
+
+        mappings.push({
+          keyword,
+          assessment,
+          chapters: chapters.length > 0 ? chapters : ["*"],
+          raw: trimmed
+        });
+      }
+
+      mappings.sort((a, b) => b.keyword.length - a.keyword.length);
+
+      return mappings;
+    }
+
+    function findManualMapping(descriptor, mappings) {
+      const s = lowerClean(descriptor);
+
+      for (const mapping of mappings) {
+        if (s.includes(mapping.keyword)) {
+          return mapping;
+        }
+      }
+
+      return null;
+    }
+
+    function extractBook(chapter) {
+      const s = clean(chapter);
+      const match = s.match(/^(Book\s*\d+[A-Za-z]?)/i);
+
+      if (match) {
+        return clean(match[1]).replace(/\s+/g, " ");
+      }
+
+      return "Unclassified";
+    }
+
+    function normaliseCategory(rawCategory, rules, keepDetailedChapter) {
+      const raw = clean(rawCategory);
+      const lower = lowerClean(raw);
+
+      if (!raw) {
+        return {
+          book: "Unclassified",
+          chapter: "Unclassified",
+          status: "MISSING_ITEM_CATEGORY"
+        };
+      }
+
+      if (!keepDetailedChapter) {
+        const bookMatch = raw.match(/Book\s*\d+[A-Za-z]?/i);
+
+        if (bookMatch) {
+          const book = clean(bookMatch[0]);
+          return {
+            book,
+            chapter: book,
+            status: "BOOK_LEVEL_ONLY"
+          };
+        }
+      }
+
+      for (const rule of rules) {
+        if (lower.includes(rule.keyword)) {
+          const chapter = rule.chapter;
+          return {
+            book: extractBook(chapter),
+            chapter,
+            status: "OK"
+          };
+        }
+      }
+
+      const directBookMatch = raw.match(/Book\s*\d+[A-Za-z]?\s*[^,;()]*/i);
+
+      if (directBookMatch) {
+        const chapter = clean(directBookMatch[0]);
+        return {
+          book: extractBook(chapter),
+          chapter,
+          status: "DIRECT_BOOK_TEXT_USED"
+        };
+      }
+
+      return {
+        book: "Unclassified",
+        chapter: raw,
+        status: "UNCLASSIFIED_CATEGORY"
+      };
+    }
+
+    function canonicalChapter(text, rules, keepDetailedChapter) {
+      const s = clean(text);
+
+      if (s === "*" || lowerClean(s) === "auto") {
+        return s;
+      }
+
+      const result = normaliseCategory(s, rules, keepDetailedChapter);
+
+      if (result.chapter && result.chapter !== "Unclassified") {
+        return result.chapter;
+      }
+
+      return s;
+    }
+
+    function detectQuestionType(remark, header, key) {
+      const r = lowerClean(remark);
+      const h = lowerClean(header);
+      const k = clean(key).toUpperCase();
+
+      if (r.includes("mcq") || r.includes("mc total") || r.match(/\bmc\b/)) {
+        return "MCQ";
+      }
+
+      if (r.includes("sq")) {
+        return "SQ";
+      }
+
+      if (/^[A-D]$/.test(k)) {
+        return "MCQ";
+      }
+
+      if (/^p\d+_/i.test(h) && /^[A-D]$/.test(k)) {
+        return "MCQ";
+      }
+
+      return "SQ";
+    }
+
+    function isAssessmentStudentRow(ws, r, classCol, noCol, nameCol) {
+      const no = clean(getCellValue(ws, r, noCol));
+      const name = clean(getCellValue(ws, r, nameCol));
+
+      if (!name || !no) {
+        return false;
+      }
+
+      if (isSummaryOrLabelText(name) || isSummaryOrLabelText(no)) {
+        return false;
+      }
+
+      const lowerName = lowerClean(name);
+      const lowerNo = lowerClean(no);
+
+      if (
+        lowerName === "stud_name" ||
+        lowerName === "name" ||
+        lowerNo === "stud_no" ||
+        lowerNo === "number"
+      ) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function parseItemScore(rawValue, item, options) {
+      const s = clean(rawValue);
+
+      if (isAbs(s)) {
+        if (options.absentAsZero) {
+          return {
+            score: 0,
+            status: "ABSENT_TREATED_AS_ZERO"
+          };
+        }
+
+        return {
+          score: null,
+          status: "ABSENT"
+        };
+      }
+
+      if (item.qType === "MCQ" && item.key) {
+        if (!s) {
+          if (options.blankMcqAsWrong) {
+            return {
+              score: 0,
+              status: "BLANK_MCQ_TREATED_AS_WRONG"
+            };
+          }
+
+          return {
+            score: null,
+            status: "MISSING_MCQ_ANSWER"
+          };
+        }
+
+        if (isUnknown(s)) {
+          if (options.unknownMcqAsWrong) {
+            return {
+              score: 0,
+              status: "UNKNOWN_MCQ_TREATED_AS_WRONG"
+            };
+          }
+
+          return {
+            score: null,
+            status: "UNKNOWN_MCQ_ANSWER"
+          };
+        }
+
+        const n = toNumber(rawValue);
+
+        if (n !== null && !/^[A-D]$/i.test(s)) {
+          return {
+            score: n,
+            status: "NUMERIC_MCQ_SCORE_USED"
+          };
+        }
+
+        const ans = s.toUpperCase().replace(/\s+/g, "");
+        const key = clean(item.key).toUpperCase().replace(/\s+/g, "");
+
+        if (ans === key) {
+          return {
+            score: item.fullMark,
+            status: "OK"
+          };
+        }
+
+        return {
+          score: 0,
+          status: "MCQ_INCORRECT"
+        };
+      }
+
+      if (!s) {
+        return {
+          score: null,
+          status: "MISSING_SCORE"
+        };
+      }
+
+      if (isUnknown(s)) {
+        return {
+          score: null,
+          status: "UNKNOWN_SCORE"
+        };
+      }
+
+      const n = toNumber(rawValue);
+
+      if (n === null) {
+        return {
+          score: null,
+          status: "NON_NUMERIC_SCORE"
+        };
+      }
+
+      return {
+        score: n,
+        status: "OK"
+      };
+    }
+
+    function uniqueStatus(statuses) {
+      const arr = Array.from(statuses).filter(Boolean);
+      const nonOk = arr.filter((s) => s !== "OK");
+
+      if (nonOk.length === 0) {
+        return "OK";
+      }
+
+      return Array.from(new Set(nonOk)).join("; ");
+    }
+
+    function extractAssessmentSheet(workbook, sheetName, options, rules) {
+      const logs = [];
+      const ws = workbook.Sheets[sheetName];
+
+      if (!ws) {
+        return {
+          sourceRows: [],
+          itemAuditRows: [],
+          logs: ["[WARNING] Source assessment sheet not found: " + sheetName]
+        };
+      }
+
+      const range = getRange(ws);
+      const headerInfo = findHeaderInfo(ws);
+      const fullMarkRow = findRowContainingExact(ws, "full_mark");
+      const itemCategoryRow = findRowContainingExact(ws, "item_category");
+      const remarksRow = findRowContainingExact(ws, "remarks");
+      const keyRow = findRowContainingExact(ws, "key");
+
+      if (!headerInfo) {
+        throw new Error("Cannot find stud_no / stud_name header row in source sheet: " + sheetName);
+      }
+
+      if (fullMarkRow < 0) {
+        throw new Error("Cannot find full_mark row in source sheet: " + sheetName);
+      }
+
+      if (itemCategoryRow < 0) {
+        throw new Error("Cannot find item_category row in source sheet: " + sheetName);
+      }
+
+      if (remarksRow < 0) {
+        throw new Error("Cannot find remarks row in source sheet: " + sheetName);
+      }
+
+      const classCol = headerInfo.classCol >= 0 ? headerInfo.classCol : 0;
+      const noCol = headerInfo.noCol;
+      const nameCol = headerInfo.nameCol;
+
+      logs.push(
+        "[" +
+          sheetName +
+          "] header row = " +
+          (headerInfo.row + 1) +
+          ", full_mark row = " +
+          (fullMarkRow + 1) +
+          ", item_category row = " +
+          (itemCategoryRow + 1) +
+          ", remarks row = " +
+          (remarksRow + 1) +
+          ", key row = " +
+          (keyRow >= 0 ? keyRow + 1 : "not found") +
+          "."
+      );
+
+      const studentRows = [];
+      const startRow = Math.max(headerInfo.row, fullMarkRow, itemCategoryRow, remarksRow) + 1;
+
+      for (let r = startRow; r <= range.e.r; r++) {
+        if (isAssessmentStudentRow(ws, r, classCol, noCol, nameCol)) {
+          studentRows.push(r);
+        }
+      }
+
+      logs.push("[" + sheetName + "] student rows detected = " + studentRows.length + ".");
+
+      const itemColumns = [];
+      const itemAuditRows = [];
+
+      for (let c = range.s.c; c <= range.e.c; c++) {
+        const rawCategory = clean(getCellValue(ws, itemCategoryRow, c));
+        const fullMarkRaw = getCellValue(ws, fullMarkRow, c);
+        const fullMark = toNumber(fullMarkRaw);
+        const remark = clean(getCellValue(ws, remarksRow, c));
+        const header = clean(getCellValue(ws, headerInfo.row, c));
+        const key = keyRow >= 0 ? clean(getCellValue(ws, keyRow, c)) : "";
+        const qType = detectQuestionType(remark, header, key);
+
+        const normalised = normaliseCategory(
+          rawCategory,
+          rules,
+          options.keepDetailedChapter
+        );
+
+        let useItem = true;
+        const statuses = new Set();
+
+        if (fullMark === null) {
+          useItem = false;
+          statuses.add("NO_FULL_MARK_SKIPPED");
+        }
+
+        if (fullMark !== null && fullMark <= 0) {
+          useItem = false;
+          statuses.add("ZERO_OR_NEGATIVE_FULL_MARK_SKIPPED");
+        }
+
+        if (!rawCategory) {
+          useItem = false;
+          statuses.add("NO_ITEM_CATEGORY_SKIPPED");
+        }
+
+        if (qType === "MCQ" && !options.includeMcq) {
+          useItem = false;
+          statuses.add("MCQ_EXCLUDED_BY_OPTION");
+        }
+
+        if (qType === "SQ" && !options.includeSq) {
+          useItem = false;
+          statuses.add("SQ_EXCLUDED_BY_OPTION");
+        }
+
+        const lowerRemark = lowerClean(remark);
+        const lowerHeader = lowerClean(header);
+        const lowerRaw = lowerClean(rawCategory);
+
+        if (
+          lowerRemark.includes("total") ||
+          lowerHeader.includes("total") ||
+          lowerRemark === "level" ||
+          lowerHeader === "level" ||
+          lowerRaw === "mc total" ||
+          lowerRaw === "sq total" ||
+          lowerRaw === "total" ||
+          lowerRaw === "level"
+        ) {
+          useItem = false;
+          statuses.add("SUMMARY_COLUMN_SKIPPED");
+        }
+
+        if (useItem && normalised.status !== "OK") {
+          statuses.add(normalised.status);
+        }
+
+        if (useItem && options.skipItemsWithNoStudentData) {
+          let nonBlankStudentDataCount = 0;
+
+          for (const r of studentRows) {
+            const value = clean(getCellValue(ws, r, c));
+
+            if (value !== "") {
+              nonBlankStudentDataCount += 1;
+            }
+          }
+
+          if (nonBlankStudentDataCount === 0) {
+            useItem = false;
+            statuses.add("NO_STUDENT_SCORE_DATA_SKIPPED");
+          }
+        }
+
+        if (useItem) {
+          itemColumns.push({
+            c,
+            colLetter: colLetter(c),
+            qType,
+            header,
+            remark,
+            rawCategory,
+            key,
+            fullMark,
+            book: normalised.book,
+            chapter: normalised.chapter,
+            categoryStatus: normalised.status
+          });
+        }
+
+        if (rawCategory || fullMark !== null || remark || header) {
+          itemAuditRows.push({
+            "Source Sheet": sheetName,
+            "Column": colLetter(c),
+            "Question Type": qType,
+            "Header": header,
+            "Remark": remark,
+            "Key": key,
+            "Raw Item Category": rawCategory,
+            "Normalised Book": normalised.book,
+            "Normalised Chapter": normalised.chapter,
+            "Full Mark": fullMark === null ? "" : fmt(fullMark, 2),
+            "Use Item": useItem ? "Y" : "N",
+            "Status": uniqueStatus(statuses)
+          });
+        }
+      }
+
+      logs.push("[" + sheetName + "] usable item columns = " + itemColumns.length + ".");
+
+      const sourceRows = [];
+
+      for (const r of studentRows) {
+        const cls = clean(getCellValue(ws, r, classCol));
+        const no = clean(getCellValue(ws, r, noCol));
+        const name = clean(getCellValue(ws, r, nameCol));
+
+        const groupMap = new Map();
+
+        for (const item of itemColumns) {
+          const rawScore = getCellValue(ws, r, item.c);
+          const parsed = parseItemScore(rawScore, item, options);
+
+          const key = [
+            sheetName,
+            item.book,
+            item.chapter
+          ].join("||");
+
+          if (!groupMap.has(key)) {
+            groupMap.set(key, {
+              assessment: sheetName,
+              book: item.book,
+              chapter: item.chapter,
+              scoreSum: 0,
+              scoreKnownCount: 0,
+              scoreMissingCount: 0,
+              fullSum: 0,
+              itemRemarks: [],
+              itemCount: 0,
+              statuses: new Set()
+            });
+          }
+
+          const group = groupMap.get(key);
+
+          group.fullSum += item.fullMark;
+          group.itemRemarks.push(item.remark || item.header || item.colLetter);
+          group.itemCount += 1;
+
+          if (parsed.score !== null) {
+            group.scoreSum += parsed.score;
+            group.scoreKnownCount += 1;
+          } else {
+            group.scoreMissingCount += 1;
+          }
+
+          group.statuses.add(parsed.status);
+
+          if (item.categoryStatus !== "OK") {
+            group.statuses.add(item.categoryStatus);
+          }
+
+          if (
+            parsed.score !== null &&
+            item.fullMark !== null &&
+            parsed.score > item.fullMark + 1e-9
+          ) {
+            group.statuses.add("ITEM_SCORE_EXCEEDS_FULL_MARK_CHECK");
+            logs.push(
+              "[" +
+                sheetName +
+                "] score exceeds full mark: row " +
+                (r + 1) +
+                ", student " +
+                cls +
+                "-" +
+                no +
+                " " +
+                name +
+                ", column " +
+                item.colLetter +
+                ", score = " +
+                parsed.score +
+                ", full = " +
+                item.fullMark +
+                "."
+            );
+          }
+        }
+
+        for (const group of groupMap.values()) {
+          if (group.scoreKnownCount > 0 && group.scoreMissingCount > 0) {
+            group.statuses.add("PARTIAL_SCORE_AVAILABLE");
+          }
+
+          const hasScore = group.scoreKnownCount > 0;
+          const scoreNum = hasScore ? group.scoreSum : null;
+          const fullNum = group.fullSum;
+          const pctNum = hasScore && fullNum > 0 ? (scoreNum / fullNum) * 100 : null;
+
+          const row = {
+            "Source Sheet": sheetName,
+            "Class": cls,
+            "Number": no,
+            "Name": name,
+            "Assessment": group.assessment,
+            "Book": group.book,
+            "Chapter": group.chapter,
+            "Score": hasScore ? fmt(scoreNum, 2) : "",
+            "Full Mark": fmt(fullNum, 2),
+            "Percentage": hasScore ? fmt(pctNum, 2) : "",
+            "Items Included": Array.from(new Set(group.itemRemarks)).join("|"),
+            "Item Count": group.itemCount,
+            "Status": uniqueStatus(group.statuses),
+            "_score": scoreNum,
+            "_full": fullNum,
+            "_percentage": pctNum
+          };
+
+          sourceRows.push(row);
+        }
+      }
+
+      logs.push("[" + sheetName + "] source chapter summary rows = " + sourceRows.length + ".");
+
+      return {
+        sourceRows,
+        itemAuditRows,
+        logs
+      };
+    }
+
+    function findDailyLabelRows(ws, headerRow) {
+      const range = getRange(ws);
+      const labels = {
+        fullRow: -1,
+        bookRow: -1
+      };
+
+      for (let r = headerRow + 1; r <= range.e.r; r++) {
+        const matched = rowContainsAnyLabel(ws, r, [
+          "full",
+          "full mark",
+          "full_mark",
+          "book"
+        ]);
+
+        if (
+          labels.fullRow < 0 &&
+          (matched === "full" || matched === "full mark" || matched === "full_mark")
+        ) {
+          labels.fullRow = r;
+        }
+
+        if (labels.bookRow < 0 && matched === "book") {
+          labels.bookRow = r;
+        }
+      }
+
+      return labels;
+    }
+
+    function extractDailyMarksSheet(workbook, sheetName, options, rules) {
+      const logs = [];
+      const ws = workbook.Sheets[sheetName];
+
+      if (!ws) {
+        return {
+          sourceRows: [],
+          itemAuditRows: [],
+          logs: ["[WARNING] Optional daily marks sheet not found: " + sheetName]
+        };
+      }
+
+      const range = getRange(ws);
+      const headerInfo = findHeaderInfo(ws);
+
+      if (!headerInfo) {
+        return {
+          sourceRows: [],
+          itemAuditRows: [],
+          logs: ["[WARNING] Cannot find Class / Number / Name header in optional daily marks sheet: " + sheetName]
+        };
+      }
+
+      const classCol = headerInfo.classCol >= 0 ? headerInfo.classCol : 0;
+      const noCol = headerInfo.noCol;
+      const nameCol = headerInfo.nameCol;
+      const labelRows = findDailyLabelRows(ws, headerInfo.row);
+
+      logs.push(
+        "[" +
+          sheetName +
+          "] optional daily marks header row = " +
+          (headerInfo.row + 1) +
+          ", full row = " +
+          (labelRows.fullRow >= 0 ? labelRows.fullRow + 1 : "not found") +
+          ", book row = " +
+          (labelRows.bookRow >= 0 ? labelRows.bookRow + 1 : "not found") +
+          "."
+      );
+
+      const studentRows = [];
+
+      for (let r = headerInfo.row + 1; r <= range.e.r; r++) {
+        const no = clean(getCellValue(ws, r, noCol));
+        const name = clean(getCellValue(ws, r, nameCol));
+
+        if (!no || !name) {
+          continue;
+        }
+
+        if (isSummaryOrLabelText(no) || isSummaryOrLabelText(name)) {
+          continue;
+        }
+
+        studentRows.push(r);
+      }
+
+      const itemColumns = [];
+      const itemAuditRows = [];
+
+      for (let c = range.s.c; c <= range.e.c; c++) {
+        if (c === classCol || c === noCol || c === nameCol) {
+          continue;
+        }
+
+        const header = clean(getCellValue(ws, headerInfo.row, c));
+        const book = labelRows.bookRow >= 0 ? clean(getCellValue(ws, labelRows.bookRow, c)) : "";
+        const rawCategory = clean([book, header].filter(Boolean).join(" "));
+        const fullMark = labelRows.fullRow >= 0 ? toNumber(getCellValue(ws, labelRows.fullRow, c)) : null;
+
+        if (!header && !book) {
+          continue;
+        }
+
+        const normalised = normaliseCategory(
+          rawCategory,
+          rules,
+          options.keepDetailedChapter
+        );
+
+        let useItem = true;
+        const statuses = new Set();
+
+        if (fullMark === null || fullMark <= 0) {
+          useItem = false;
+          statuses.add("NO_VALID_FULL_MARK_SKIPPED");
+        }
+
+        if (normalised.chapter === "Unclassified") {
+          statuses.add(normalised.status);
+        }
+
+        if (useItem && options.skipItemsWithNoStudentData) {
+          let nonBlankStudentDataCount = 0;
+
+          for (const r of studentRows) {
+            const value = clean(getCellValue(ws, r, c));
+
+            if (value !== "") {
+              nonBlankStudentDataCount += 1;
+            }
+          }
+
+          if (nonBlankStudentDataCount === 0) {
+            useItem = false;
+            statuses.add("NO_STUDENT_SCORE_DATA_SKIPPED");
+          }
+        }
+
+        if (useItem) {
+          itemColumns.push({
+            c,
+            colLetter: colLetter(c),
+            header,
+            rawCategory,
+            fullMark,
+            book: normalised.book,
+            chapter: normalised.chapter
+          });
+        }
+
+        itemAuditRows.push({
+          "Source Sheet": sheetName,
+          "Column": colLetter(c),
+          "Question Type": "Daily",
+          "Header": header,
+          "Remark": header,
+          "Key": "",
+          "Raw Item Category": rawCategory,
+          "Normalised Book": normalised.book,
+          "Normalised Chapter": normalised.chapter,
+          "Full Mark": fullMark === null ? "" : fmt(fullMark, 2),
+          "Use Item": useItem ? "Y" : "N",
+          "Status": uniqueStatus(statuses)
+        });
+      }
+
+      const sourceRows = [];
+
+      for (const r of studentRows) {
+        const cls = clean(getCellValue(ws, r, classCol));
+        const no = clean(getCellValue(ws, r, noCol));
+        const name = clean(getCellValue(ws, r, nameCol));
+
+        for (const item of itemColumns) {
+          const rawScore = getCellValue(ws, r, item.c);
+
+          let score = null;
+          let status = "OK";
+
+          if (isAbs(rawScore)) {
+            if (options.absentAsZero) {
+              score = 0;
+              status = "ABSENT_TREATED_AS_ZERO";
+            } else {
+              status = "ABSENT";
+            }
+          } else if (isUnknown(rawScore) || clean(rawScore) === "") {
+            status = "UNKNOWN_OR_MISSING_SCORE";
+          } else {
+            score = toNumber(rawScore);
+
+            if (score === null) {
+              status = "NON_NUMERIC_SCORE";
+            }
+          }
+
+          const pct = score !== null && item.fullMark > 0 ? (score / item.fullMark) * 100 : null;
+
+          sourceRows.push({
+            "Source Sheet": sheetName,
+            "Class": cls,
+            "Number": no,
+            "Name": name,
+            "Assessment": sheetName,
+            "Book": item.book,
+            "Chapter": item.chapter,
+            "Score": score === null ? "" : fmt(score, 2),
+            "Full Mark": fmt(item.fullMark, 2),
+            "Percentage": pct === null ? "" : fmt(pct, 2),
+            "Items Included": item.header || item.colLetter,
+            "Item Count": 1,
+            "Status": status,
+            "_score": score,
+            "_full": item.fullMark,
+            "_percentage": pct
+          });
+        }
+      }
+
+      logs.push("[" + sheetName + "] optional daily marks source rows = " + sourceRows.length + ".");
+
+      return {
+        sourceRows,
+        itemAuditRows,
+        logs
+      };
+    }
+
+    function buildSourceIndex(sourceRows) {
+      const byName = new Map();
+      const fullDefMap = new Map();
+
+      for (const row of sourceRows) {
+        const nameKey = normaliseName(row["Name"]);
+
+        if (!byName.has(nameKey)) {
+          byName.set(nameKey, []);
+        }
+
+        byName.get(nameKey).push(row);
+
+        const defKey = normaliseSourceLabel(row["Assessment"]) + "||" + row["Chapter"];
+        const full = toNumber(row["_full"] !== undefined ? row["_full"] : row["Full Mark"]);
+
+        if (full !== null) {
+          if (!fullDefMap.has(defKey)) {
+            fullDefMap.set(defKey, {
+              assessment: row["Assessment"],
+              chapter: row["Chapter"],
+              book: row["Book"],
+              full
+            });
+          } else {
+            const existing = fullDefMap.get(defKey);
+
+            if (full > existing.full) {
+              existing.full = full;
+            }
+          }
+        }
+      }
+
+      const fullDefs = Array.from(fullDefMap.values());
+
+      return {
+        byName,
+        fullDefs
+      };
+    }
+
+    function normaliseSourceLabel(label) {
+      return lowerClean(label)
+        .replace(/[^a-z0-9\u4e00-\u9fff]+/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function sourceLabelMatches(actual, required) {
+      const a = normaliseSourceLabel(actual);
+      const b = normaliseSourceLabel(required);
+
+      if (!b || b === "auto" || b === "*") {
+        return true;
+      }
+
+      if (a === b) {
+        return true;
+      }
+
+      if (b.includes("1st") && a.includes("1st")) {
+        return true;
+      }
+
+      if (b.includes("first") && a.includes("1st")) {
+        return true;
+      }
+
+      if (b.includes("2nd") && a.includes("2nd")) {
+        return true;
+      }
+
+      if (b.includes("second") && a.includes("2nd")) {
+        return true;
+      }
+
+      if (b.includes("3rd") && a.includes("3rd")) {
+        return true;
+      }
+
+      if (b.includes("third") && a.includes("3rd")) {
+        return true;
+      }
+
+      if (b.includes("6s daily") && a.includes("6s daily")) {
+        return true;
+      }
+
+      if (b.includes("5s daily") && a.includes("5s daily")) {
+        return true;
+      }
+
+      return false;
+    }
+
+    function assessmentRank(label) {
+      const s = lowerClean(label);
+
+      if (s.includes("3rd") || s.includes("third") || s.includes("t3")) {
+        return 3;
+      }
+
+      if (s.includes("2nd") || s.includes("second") || s.includes("t2")) {
+        return 2;
+      }
+
+      if (s.includes("1st") || s.includes("first") || s.includes("t1")) {
+        return 1;
+      }
+
+      if (s.includes("6s daily")) {
+        return 0.6;
+      }
+
+      if (s.includes("5s daily")) {
+        return 0.5;
+      }
+
+      return 0;
+    }
+
+    function inferSourceAssessmentFromDescriptor(descriptor) {
+      const s = lowerClean(descriptor);
+
+      if (
+        s.includes("1st assessment") ||
+        s.includes("first assessment") ||
+        s.includes("t1a2") ||
+        s.includes("term 1") ||
+        s.includes("1st")
+      ) {
+        return "1st assessment";
+      }
+
+      if (
+        s.includes("2nd assessment") ||
+        s.includes("second assessment") ||
+        s.includes("t2a2") ||
+        s.includes("term 2") ||
+        s.includes("2nd")
+      ) {
+        return "2nd assessment";
+      }
+
+      if (
+        s.includes("3rd assessment") ||
+        s.includes("third assessment") ||
+        s.includes("t3a2") ||
+        s.includes("term 3") ||
+        s.includes("3rd")
+      ) {
+        return "3rd assessment";
+      }
+
+      if (s.includes("6s daily marks")) {
+        return "6S daily marks";
+      }
+
+      if (s.includes("5s daily marks")) {
+        return "5S daily marks";
+      }
+
+      return "AUTO";
+    }
+
+    function compatibleChaptersFor(chapter) {
+      const groups = [
+        [
+          "Book 1 Gases",
+          "Book 1 Gas Law"
+        ],
+        [
+          "Book 4 Electrostatics",
+          "Book 4 Electric field"
+        ],
+        [
+          "Book 4 Circuit",
+          "Book 4 Power and resistance",
+          "Book 4 Domestic electricity"
+        ],
+        [
+          "Book 4 Magnetic field",
+          "Book 4 Magnetic force",
+          "Book 4 Magnetic field and force"
+        ],
+        [
+          "Book 5 Radioactivity Ch 1",
+          "Book 5 Radioactive decay",
+          "Book 5 Radioactivity Ch 1,2"
+        ],
+        [
+          "Book 2 Force & Motion",
+          "Book 2 Projectile motion",
+          "Book 2 Circular motion",
+          "Book 2 Gravitation",
+          "Book 2 Motion graph"
+        ],
+        [
+          "Book 3B Diffraction grating",
+          "Book 3B Wave motion"
+        ]
+      ];
+
+      for (const group of groups) {
+        if (group.includes(chapter)) {
+          return group;
+        }
+      }
+
+      return [chapter];
+    }
+
+    function makeTargetDescriptor(ws, c, headerInfo, labelRows) {
+      const header = clean(getCellValue(ws, headerInfo.row, c));
+      const book = labelRows.bookRow >= 0 ? clean(getCellValue(ws, labelRows.bookRow, c)) : "";
+
+      const topValues = [];
+
+      for (let r = 0; r < headerInfo.row; r++) {
+        const v = clean(getCellValue(ws, r, c));
+
+        if (v) {
+          topValues.push(v);
+        }
+      }
+
+      const context = topValues.join(" ");
+      const descriptor = [header, book, context].filter(Boolean).join(" ");
+
+      return {
+        header,
+        book,
+        context,
+        descriptor
+      };
+    }
+
+    function inferTargetMapping(descriptorInfo, rules, manualMappings, options) {
+      const descriptor = descriptorInfo.descriptor;
+      const manual = findManualMapping(descriptor, manualMappings);
+      const inferredNorm = normaliseCategory(
+        descriptor,
+        rules,
+        options.keepDetailedChapter
+      );
+
+      let assessment = inferSourceAssessmentFromDescriptor(descriptor);
+      let chapters = [];
+      let manualRaw = "";
+
+      if (manual) {
+        manualRaw = manual.raw;
+
+        if (
+          manual.assessment &&
+          lowerClean(manual.assessment) !== "auto" &&
+          manual.assessment !== "*"
+        ) {
+          assessment = manual.assessment;
+        }
+
+        for (const ch of manual.chapters) {
+          if (ch === "*" || lowerClean(ch) === "auto") {
+            if (
+              inferredNorm.chapter &&
+              inferredNorm.chapter !== "Unclassified"
+            ) {
+              chapters.push(inferredNorm.chapter);
+            }
+          } else {
+            chapters.push(canonicalChapter(ch, rules, options.keepDetailedChapter));
+          }
+        }
+      } else {
+        if (
+          inferredNorm.chapter &&
+          inferredNorm.chapter !== "Unclassified"
+        ) {
+          chapters.push(inferredNorm.chapter);
+        }
+      }
+
+      chapters = Array.from(new Set(chapters.filter(Boolean)));
+
+      return {
+        assessment,
+        chapters,
+        inferredChapter: chapters.join(" + "),
+        manualRaw,
+        inferredStatus:
+          chapters.length > 0 ? inferredNorm.status : "NO_CHAPTER_INFERRED"
+      };
+    }
+
+    function resolveColumnSource(mapping, sourceIndex, options) {
+      const baseChapters = mapping.chapters.filter((x) => {
+        const s = clean(x);
+        return s && s !== "Unclassified";
+      });
+
+      if (baseChapters.length === 0) {
+        return {
+          ok: false,
+          sourceAssessment: "",
+          sourceChapters: [],
+          fullMark: null,
+          matchModeUsed: "",
+          status: "NO_TARGET_CHAPTER_INFERRED"
+        };
+      }
+
+      const requiredAssessment =
+        mapping.assessment &&
+        lowerClean(mapping.assessment) !== "auto" &&
+        mapping.assessment !== "*"
+          ? mapping.assessment
+          : "";
+
+      const exactAllowed = new Set(baseChapters);
+      const compatibleAllowed = new Set();
+
+      for (const ch of baseChapters) {
+        for (const expanded of compatibleChaptersFor(ch)) {
+          compatibleAllowed.add(canonicalChapter(expanded, [], true));
+        }
+      }
+
+      function defsForAllowedSet(allowedSet) {
+        return sourceIndex.fullDefs.filter((def) => {
+          if (requiredAssessment && !sourceLabelMatches(def.assessment, requiredAssessment)) {
+            return false;
+          }
+
+          return allowedSet.has(def.chapter);
+        });
+      }
+
+      let candidateDefs = [];
+      let matchModeUsed = "";
+
+      if (options.chapterMatchMode === "exact") {
+        candidateDefs = defsForAllowedSet(exactAllowed);
+        matchModeUsed = "exact";
+      } else if (options.chapterMatchMode === "compatible") {
+        candidateDefs = defsForAllowedSet(compatibleAllowed);
+        matchModeUsed = "compatible";
+      } else {
+        const exactDefs = defsForAllowedSet(exactAllowed);
+
+        if (exactDefs.length > 0) {
+          candidateDefs = exactDefs;
+          matchModeUsed = "exact";
+        } else {
+          candidateDefs = defsForAllowedSet(compatibleAllowed);
+          matchModeUsed = "compatible_fallback";
+        }
+      }
+
+      if (candidateDefs.length === 0) {
+        return {
+          ok: false,
+          sourceAssessment: "",
+          sourceChapters: [],
+          fullMark: null,
+          matchModeUsed,
+          status: requiredAssessment
+            ? "NO_SOURCE_CHAPTER_FOUND_IN_REQUIRED_SOURCE_SHEET"
+            : "NO_SOURCE_CHAPTER_FOUND"
+        };
+      }
+
+      const groupMap = new Map();
+
+      for (const def of candidateDefs) {
+        const key = def.assessment;
+
+        if (!groupMap.has(key)) {
+          groupMap.set(key, {
+            assessment: def.assessment,
+            chapters: new Set(),
+            fullMark: 0
+          });
+        }
+
+        const group = groupMap.get(key);
+        group.chapters.add(def.chapter);
+        group.fullMark += def.full;
+      }
+
+      const groups = Array.from(groupMap.values());
+
+      let chosen = null;
+      let status = "OK";
+
+      if (groups.length === 1) {
+        chosen = groups[0];
+      } else if (requiredAssessment) {
+        chosen = groups[0];
+        status = "MULTIPLE_GROUPS_MATCH_REQUIRED_SOURCE_SHEET_FIRST_USED";
+      } else if (options.ambiguousMode === "leave") {
+        return {
+          ok: false,
+          sourceAssessment: "",
+          sourceChapters: [],
+          fullMark: null,
+          matchModeUsed,
+          status: "AMBIGUOUS_SOURCE_ASSESSMENT_LEFT_BLANK: " +
+            groups.map((g) => g.assessment).join(" | ")
+        };
+      } else if (options.ambiguousMode === "latest") {
+        groups.sort((a, b) => assessmentRank(b.assessment) - assessmentRank(a.assessment));
+        chosen = groups[0];
+        status = "AMBIGUOUS_AUTO_CHOSEN_LATEST";
+      } else if (options.ambiguousMode === "earliest") {
+        groups.sort((a, b) => assessmentRank(a.assessment) - assessmentRank(b.assessment));
+        chosen = groups[0];
+        status = "AMBIGUOUS_AUTO_CHOSEN_EARLIEST";
+      } else {
+        groups.sort((a, b) => {
+          if (Math.abs(b.fullMark - a.fullMark) > 1e-9) {
+            return b.fullMark - a.fullMark;
+          }
+
+          return assessmentRank(b.assessment) - assessmentRank(a.assessment);
+        });
+
+        chosen = groups[0];
+        status = "AMBIGUOUS_AUTO_CHOSEN_LARGEST_FULL_THEN_LATEST";
+      }
+
+      return {
+        ok: true,
+        sourceAssessment: chosen.assessment,
+        sourceChapters: Array.from(chosen.chapters),
+        fullMark: chosen.fullMark,
+        matchModeUsed,
+        status
+      };
+    }
+
+    function aggregateForStudentResolved(sourceRowsForStudent, resolved) {
+      if (!sourceRowsForStudent || sourceRowsForStudent.length === 0) {
+        return {
+          ok: false,
+          score: null,
+          fullMark: resolved.fullMark,
+          percentage: null,
+          status: "NO_SOURCE_STUDENT_MATCH",
+          notes: ""
+        };
+      }
+
+      const chapterSet = new Set(resolved.sourceChapters);
+
+      const selectedRows = sourceRowsForStudent.filter((row) => {
+        return (
+          sourceLabelMatches(row["Assessment"], resolved.sourceAssessment) &&
+          chapterSet.has(row["Chapter"])
+        );
+      });
+
+      if (selectedRows.length === 0) {
+        return {
+          ok: false,
+          score: null,
+          fullMark: resolved.fullMark,
+          percentage: null,
+          status: "NO_SOURCE_CHAPTER_FOR_THIS_STUDENT",
+          notes: ""
+        };
+      }
+
+      let scoreSum = 0;
+      let knownCount = 0;
+      let missingCount = 0;
+      const statuses = new Set();
+      const chaptersFound = new Set();
+
+      for (const row of selectedRows) {
+        chaptersFound.add(row["Chapter"]);
+        statuses.add(row["Status"]);
+
+        const score = row["_score"] !== undefined ? row["_score"] : toNumber(row["Score"]);
+
+        if (score !== null && score !== undefined && Number.isFinite(Number(score))) {
+          scoreSum += Number(score);
+          knownCount += 1;
+        } else {
+          missingCount += 1;
+        }
+      }
+
+      for (const ch of resolved.sourceChapters) {
+        if (!chaptersFound.has(ch)) {
+          statuses.add("MISSING_SOURCE_CHAPTER_FOR_STUDENT: " + ch);
+        }
+      }
+
+      if (knownCount === 0) {
+        return {
+          ok: false,
+          score: null,
+          fullMark: resolved.fullMark,
+          percentage: null,
+          status: uniqueStatus(statuses),
+          notes: "Source rows exist but no numeric score."
+        };
+      }
+
+      if (missingCount > 0) {
+        statuses.add("PARTIAL_SOURCE_SCORE_USED");
+      }
+
+      const pct =
+        resolved.fullMark && resolved.fullMark > 0
+          ? (scoreSum / resolved.fullMark) * 100
+          : null;
+
+      return {
+        ok: true,
+        score: scoreSum,
+        fullMark: resolved.fullMark,
+        percentage: pct,
+        status: uniqueStatus(statuses),
+        notes: "Source chapters found: " + Array.from(chaptersFound).join(" + ")
+      };
+    }
+
+    function findTargetLabelRows(ws, headerInfo) {
+      const range = getRange(ws);
+      const labelRows = {
+        fullRow: -1,
+        bookRow: -1,
+        averageRow: -1,
+        maxRow: -1,
+        minRow: -1,
+        passRow: -1
+      };
+
+      for (let r = headerInfo.row + 1; r <= range.e.r; r++) {
+        const matched = rowContainsAnyLabel(ws, r, [
+          "full",
+          "full mark",
+          "full_mark",
+          "book",
+          "average",
+          "avaerage",
+          "avg",
+          "max",
+          "min",
+          "pass %",
+          "pass%",
+          "passing"
+        ]);
+
+        if (
+          labelRows.fullRow < 0 &&
+          (matched === "full" || matched === "full mark" || matched === "full_mark")
+        ) {
+          labelRows.fullRow = r;
+        }
+
+        if (labelRows.bookRow < 0 && matched === "book") {
+          labelRows.bookRow = r;
+        }
+
+        if (
+          labelRows.averageRow < 0 &&
+          (matched === "average" || matched === "avaerage" || matched === "avg")
+        ) {
+          labelRows.averageRow = r;
+        }
+
+        if (labelRows.maxRow < 0 && matched === "max") {
+          labelRows.maxRow = r;
+        }
+
+        if (labelRows.minRow < 0 && matched === "min") {
+          labelRows.minRow = r;
+        }
+
+        if (
+          labelRows.passRow < 0 &&
+          (matched === "pass %" || matched === "pass%" || matched === "passing")
+        ) {
+          labelRows.passRow = r;
+        }
+      }
+
+      return labelRows;
+    }
+
+    function getTargetStudentRows(ws, headerInfo, labelRows) {
+      const range = getRange(ws);
+      const rows = [];
+      const summaryRows = new Set(
+        Object.values(labelRows).filter((x) => x >= 0)
+      );
+
+      for (let r = headerInfo.row + 1; r <= range.e.r; r++) {
+        if (summaryRows.has(r)) {
+          continue;
+        }
+
+        const no = clean(getCellValue(ws, r, headerInfo.noCol));
+        const name = clean(getCellValue(ws, r, headerInfo.nameCol));
+
+        if (!no || !name) {
+          continue;
+        }
+
+        if (isSummaryOrLabelText(no) || isSummaryOrLabelText(name)) {
+          continue;
+        }
+
+        const lowerNo = lowerClean(no);
+        const lowerName = lowerClean(name);
+
+        if (
+          lowerNo === "number" ||
+          lowerNo === "stud_no" ||
+          lowerName === "name" ||
+          lowerName === "stud_name"
+        ) {
+          continue;
+        }
+
+        rows.push(r);
+      }
+
+      return rows;
+    }
+
+    function computeFillValue(agg, ws, c, labelRows, resolved, options) {
+      if (!agg.ok) {
+        return null;
+      }
+
+      if (options.fillValueMode === "percentage") {
+        return agg.percentage === null ? null : roundNumber(agg.percentage, 2);
+      }
+
+      if (options.fillValueMode === "scaleToTargetFull") {
+        let targetFull = null;
+
+        if (labelRows.fullRow >= 0) {
+          targetFull = toNumber(getCellValue(ws, labelRows.fullRow, c));
+        }
+
+        if (targetFull === null) {
+          targetFull = resolved.fullMark;
+        }
+
+        if (
+          agg.percentage === null ||
+          targetFull === null ||
+          !Number.isFinite(Number(targetFull))
+        ) {
+          return null;
+        }
+
+        return roundNumber((agg.percentage / 100) * targetFull, 2);
+      }
+
+      return roundNumber(agg.score, 2);
+    }
+
+    function addFillAudit(rowArray, row) {
+      rowArray.push(row);
+    }
+
+    function fillTargetWorkbook(
+      targetWorkbook,
+      sourceIndex,
+      options,
+      rules,
+      manualMappings,
+      studentAliases
+    ) {
+      const logs = [];
+      const targetMappingRows = [];
+      const fillAuditRows = [];
+
+      const requestedTargetSheets = parseListInput(byId("targetSheetNamesInput").value);
+      const targetSheetNames =
+        requestedTargetSheets.length > 0
+          ? requestedTargetSheets
+          : targetWorkbook.SheetNames.slice();
+
+      logs.push("Target sheets to scan: " + targetSheetNames.join(", "));
+
+      for (const sheetName of targetSheetNames) {
+        const ws = targetWorkbook.Sheets[sheetName];
+
+        if (!ws) {
+          logs.push("[WARNING] Target sheet not found: " + sheetName);
+          continue;
+        }
+
+        const headerInfo = findHeaderInfo(ws);
+
+        if (!headerInfo) {
+          logs.push("[SKIP] Target sheet has no Class / Number / Name style table: " + sheetName);
+          continue;
+        }
+
+        const range = getRange(ws);
+        const classCol = headerInfo.classCol >= 0 ? headerInfo.classCol : -1;
+        const noCol = headerInfo.noCol;
+        const nameCol = headerInfo.nameCol;
+        const labelRows = findTargetLabelRows(ws, headerInfo);
+        const studentRows = getTargetStudentRows(ws, headerInfo, labelRows);
+
+        logs.push(
+          "[" +
+            sheetName +
+            "] target header row = " +
+            (headerInfo.row + 1) +
+            ", student rows = " +
+            studentRows.length +
+            ", full row = " +
+            (labelRows.fullRow >= 0 ? labelRows.fullRow + 1 : "not found") +
+            ", book row = " +
+            (labelRows.bookRow >= 0 ? labelRows.bookRow + 1 : "not found") +
+            "."
+        );
+
+        const columnMappings = [];
+
+        for (let c = range.s.c; c <= range.e.c; c++) {
+          if (c === classCol || c === noCol || c === nameCol) {
+            continue;
+          }
+
+          const descriptorInfo = makeTargetDescriptor(ws, c, headerInfo, labelRows);
+
+          if (!descriptorInfo.header && !descriptorInfo.book && !descriptorInfo.context) {
+            continue;
+          }
+
+          const mapping = inferTargetMapping(
+            descriptorInfo,
+            rules,
+            manualMappings,
+            options
+          );
+
+          const resolved = resolveColumnSource(mapping, sourceIndex, options);
+
+          const mapObj = {
+            c,
+            descriptorInfo,
+            mapping,
+            resolved,
+            studentCellsConsidered: 0,
+            studentCellsFilled: 0,
+            fullRowFilled: 0,
+            statsCellsFilled: 0
+          };
+
+          columnMappings.push(mapObj);
+        }
+
+        for (const colMap of columnMappings) {
+          if (options.fillFullRows && labelRows.fullRow >= 0) {
+            const r = labelRows.fullRow;
+
+            if (colMap.resolved.ok) {
+              const oldValue = getCellDisplayValue(ws, r, colMap.c);
+
+              if (isCellFillable(ws, r, colMap.c, options.overwriteExisting)) {
+                setCellValue(ws, r, colMap.c, roundNumber(colMap.resolved.fullMark, 2));
+                colMap.fullRowFilled += 1;
+
+                addFillAudit(fillAuditRows, {
+                  "Action": "FILLED",
+                  "Target Sheet": sheetName,
+                  "Cell": cellAddress(r, colMap.c),
+                  "Row Type": "Full",
+                  "Class": "",
+                  "Number": "",
+                  "Name": "",
+                  "Target Header": colMap.descriptorInfo.header,
+                  "Target Book": colMap.descriptorInfo.book,
+                  "Resolved Source Sheet": colMap.resolved.sourceAssessment,
+                  "Resolved Source Chapters": colMap.resolved.sourceChapters.join(" + "),
+                  "Old Value": oldValue,
+                  "New Value": fmt(colMap.resolved.fullMark, 2),
+                  "Source Score": "",
+                  "Source Full Mark": fmt(colMap.resolved.fullMark, 2),
+                  "Source Percentage": "",
+                  "Status": colMap.resolved.status,
+                  "Notes": "Filled target Full row."
+                });
+              }
+            }
+          }
+        }
+
+        if (options.fillStudentRows) {
+          for (const r of studentRows) {
+            const cls =
+              classCol >= 0 ? clean(getCellValue(ws, r, classCol)) : "";
+            const no = clean(getCellValue(ws, r, noCol));
+            const targetName = clean(getCellValue(ws, r, nameCol));
+
+            const aliasSourceName =
+              studentAliases.get(normaliseName(targetName)) || targetName;
+            const sourceRowsForStudent = sourceIndex.byName.get(normaliseName(aliasSourceName));
+
+            for (const colMap of columnMappings) {
+              if (!colMap.resolved.ok) {
+                continue;
+              }
+
+              colMap.studentCellsConsidered += 1;
+
+              const oldValue = getCellDisplayValue(ws, r, colMap.c);
+
+              if (!isCellFillable(ws, r, colMap.c, options.overwriteExisting)) {
+                continue;
+              }
+
+              const agg = aggregateForStudentResolved(
+                sourceRowsForStudent,
+                colMap.resolved
+              );
+
+              if (!agg.ok) {
+                addFillAudit(fillAuditRows, {
+                  "Action": "SKIPPED",
+                  "Target Sheet": sheetName,
+                  "Cell": cellAddress(r, colMap.c),
+                  "Row Type": "Student",
+                  "Class": cls,
+                  "Number": no,
+                  "Name": targetName,
+                  "Target Header": colMap.descriptorInfo.header,
+                  "Target Book": colMap.descriptorInfo.book,
+                  "Resolved Source Sheet": colMap.resolved.sourceAssessment,
+                  "Resolved Source Chapters": colMap.resolved.sourceChapters.join(" + "),
+                  "Old Value": oldValue,
+                  "New Value": "",
+                  "Source Score": "",
+                  "Source Full Mark": fmt(colMap.resolved.fullMark, 2),
+                  "Source Percentage": "",
+                  "Status": agg.status,
+                  "Notes":
+                    "Alias source name used: " +
+                    aliasSourceName +
+                    ". " +
+                    agg.notes
+                });
+
+                continue;
+              }
+
+              const newValue = computeFillValue(
+                agg,
+                ws,
+                colMap.c,
+                labelRows,
+                colMap.resolved,
+                options
+              );
+
+              if (newValue === null || newValue === "") {
+                addFillAudit(fillAuditRows, {
+                  "Action": "SKIPPED",
+                  "Target Sheet": sheetName,
+                  "Cell": cellAddress(r, colMap.c),
+                  "Row Type": "Student",
+                  "Class": cls,
+                  "Number": no,
+                  "Name": targetName,
+                  "Target Header": colMap.descriptorInfo.header,
+                  "Target Book": colMap.descriptorInfo.book,
+                  "Resolved Source Sheet": colMap.resolved.sourceAssessment,
+                  "Resolved Source Chapters": colMap.resolved.sourceChapters.join(" + "),
+                  "Old Value": oldValue,
+                  "New Value": "",
+                  "Source Score": fmt(agg.score, 2),
+                  "Source Full Mark": fmt(agg.fullMark, 2),
+                  "Source Percentage": agg.percentage === null ? "" : fmt(agg.percentage, 2),
+                  "Status": "NO_COMPUTABLE_FILL_VALUE",
+                  "Notes": agg.notes
+                });
+
+                continue;
+              }
+
+              setCellValue(ws, r, colMap.c, newValue);
+              colMap.studentCellsFilled += 1;
+
+              addFillAudit(fillAuditRows, {
+                "Action": "FILLED",
+                "Target Sheet": sheetName,
+                "Cell": cellAddress(r, colMap.c),
+                "Row Type": "Student",
+                "Class": cls,
+                "Number": no,
+                "Name": targetName,
+                "Target Header": colMap.descriptorInfo.header,
+                "Target Book": colMap.descriptorInfo.book,
+                "Resolved Source Sheet": colMap.resolved.sourceAssessment,
+                "Resolved Source Chapters": colMap.resolved.sourceChapters.join(" + "),
+                "Old Value": oldValue,
+                "New Value": fmt(newValue, 2),
+                "Source Score": fmt(agg.score, 2),
+                "Source Full Mark": fmt(agg.fullMark, 2),
+                "Source Percentage": agg.percentage === null ? "" : fmt(agg.percentage, 2),
+                "Status": agg.status,
+                "Notes":
+                  "Alias source name used: " +
+                  aliasSourceName +
+                  ". " +
+                  agg.notes
+              });
+            }
+          }
+        }
+
+        if (options.fillStatsRows) {
+          for (const colMap of columnMappings) {
+            if (!colMap.resolved.ok) {
+              continue;
+            }
+
+            const numericValues = [];
+
+            for (const r of studentRows) {
+              const n = toNumber(getCellValue(ws, r, colMap.c));
+
+              if (n !== null) {
+                numericValues.push(n);
+              }
+            }
+
+            if (numericValues.length === 0) {
+              continue;
+            }
+
+            const avg =
+              numericValues.reduce((sum, n) => sum + n, 0) / numericValues.length;
+            const max = Math.max(...numericValues);
+            const min = Math.min(...numericValues);
+
+            const statsToFill = [
+              {
+                row: labelRows.averageRow,
+                type: "Average",
+                value: roundNumber(avg, 2)
+              },
+              {
+                row: labelRows.maxRow,
+                type: "Max",
+                value: roundNumber(max, 2)
+              },
+              {
+                row: labelRows.minRow,
+                type: "Min",
+                value: roundNumber(min, 2)
+              }
+            ];
+
+            for (const stat of statsToFill) {
+              if (stat.row >= 0 && isCellFillable(ws, stat.row, colMap.c, options.overwriteExisting)) {
+                const oldValue = getCellDisplayValue(ws, stat.row, colMap.c);
+                setCellValue(ws, stat.row, colMap.c, stat.value);
+                colMap.statsCellsFilled += 1;
+
+                addFillAudit(fillAuditRows, {
+                  "Action": "FILLED",
+                  "Target Sheet": sheetName,
+                  "Cell": cellAddress(stat.row, colMap.c),
+                  "Row Type": stat.type,
+                  "Class": "",
+                  "Number": "",
+                  "Name": "",
+                  "Target Header": colMap.descriptorInfo.header,
+                  "Target Book": colMap.descriptorInfo.book,
+                  "Resolved Source Sheet": colMap.resolved.sourceAssessment,
+                  "Resolved Source Chapters": colMap.resolved.sourceChapters.join(" + "),
+                  "Old Value": oldValue,
+                  "New Value": fmt(stat.value, 2),
+                  "Source Score": "",
+                  "Source Full Mark": fmt(colMap.resolved.fullMark, 2),
+                  "Source Percentage": "",
+                  "Status": "OK",
+                  "Notes": "Computed from filled target student cells."
+                });
+              }
+            }
+
+            if (labelRows.passRow >= 0 && isCellFillable(ws, labelRows.passRow, colMap.c, options.overwriteExisting)) {
+              let threshold = 50;
+
+              if (options.fillValueMode !== "percentage") {
+                let full = null;
+
+                if (labelRows.fullRow >= 0) {
+                  full = toNumber(getCellValue(ws, labelRows.fullRow, colMap.c));
+                }
+
+                if (full === null) {
+                  full = colMap.resolved.fullMark;
+                }
+
+                threshold = full * 0.5;
+              }
+
+              const passCount = numericValues.filter((n) => n >= threshold).length;
+              const passRate = numericValues.length > 0 ? passCount / numericValues.length : "";
+
+              const oldValue = getCellDisplayValue(ws, labelRows.passRow, colMap.c);
+              setCellValue(ws, labelRows.passRow, colMap.c, roundNumber(passRate, 4));
+              colMap.statsCellsFilled += 1;
+
+              addFillAudit(fillAuditRows, {
+                "Action": "FILLED",
+                "Target Sheet": sheetName,
+                "Cell": cellAddress(labelRows.passRow, colMap.c),
+                "Row Type": "Pass %",
+                "Class": "",
+                "Number": "",
+                "Name": "",
+                "Target Header": colMap.descriptorInfo.header,
+                "Target Book": colMap.descriptorInfo.book,
+                "Resolved Source Sheet": colMap.resolved.sourceAssessment,
+                "Resolved Source Chapters": colMap.resolved.sourceChapters.join(" + "),
+                "Old Value": oldValue,
+                "New Value": fmt(passRate, 4),
+                "Source Score": "",
+                "Source Full Mark": fmt(colMap.resolved.fullMark, 2),
+                "Source Percentage": "",
+                "Status": "OK",
+                "Notes": "Computed from filled target student cells. Pass threshold = 50%."
+              });
+            }
+          }
+        }
+
+        for (const colMap of columnMappings) {
+          targetMappingRows.push({
+            "Target Sheet": sheetName,
+            "Column": colLetter(colMap.c),
+            "Target Header": colMap.descriptorInfo.header,
+            "Target Book": colMap.descriptorInfo.book,
+            "Target Context": colMap.descriptorInfo.context,
+            "Manual Mapping": colMap.mapping.manualRaw,
+            "Inferred Assessment": colMap.mapping.assessment,
+            "Inferred Chapter": colMap.mapping.inferredChapter,
+            "Resolved Source Sheet": colMap.resolved.ok ? colMap.resolved.sourceAssessment : "",
+            "Resolved Source Chapters": colMap.resolved.ok ? colMap.resolved.sourceChapters.join(" + ") : "",
+            "Source Full Mark": colMap.resolved.fullMark === null ? "" : fmt(colMap.resolved.fullMark, 2),
+            "Chapter Match Mode Used": colMap.resolved.matchModeUsed,
+            "Match Status": colMap.resolved.status,
+            "Student Cells Considered": colMap.studentCellsConsidered,
+            "Student Cells Filled": colMap.studentCellsFilled,
+            "Full Row Filled": colMap.fullRowFilled,
+            "Stats Cells Filled": colMap.statsCellsFilled
+          });
+        }
+
+        const filledCount = columnMappings.reduce(
+          (sum, item) => sum + item.studentCellsFilled + item.fullRowFilled + item.statsCellsFilled,
+          0
+        );
+
+        logs.push("[" + sheetName + "] cells filled = " + filledCount + ".");
+      }
+
+      return {
+        targetMappingRows,
+        fillAuditRows,
+        logs
+      };
+    }
+
+    async function readWorkbookFromFile(file) {
+      const filename = lowerClean(file.name);
+
+      if (filename.endsWith(".csv")) {
+        const text = await file.text();
+
+        return XLSX.read(text, {
+          type: "string",
+          cellFormula: true,
+          cellDates: false,
+          cellStyles: true
+        });
+      }
+
+      const arrayBuffer = await file.arrayBuffer();
+
+      return XLSX.read(arrayBuffer, {
+        type: "array",
+        cellFormula: true,
+        cellDates: false,
+        cellNF: true,
+        cellStyles: true,
+        cellText: false
+      });
+    }
+
+    function readOptions() {
+      return {
+        includeMcq: byId("includeMcqCheckbox").checked,
+        includeSq: byId("includeSqCheckbox").checked,
+        skipItemsWithNoStudentData: byId("skipItemsWithNoStudentDataCheckbox").checked,
+        includeDailyMarks: byId("includeDailyMarksCheckbox").checked,
+        absentAsZero: byId("absentAsZeroCheckbox").checked,
+        unknownMcqAsWrong: byId("unknownMcqAsWrongCheckbox").checked,
+        blankMcqAsWrong: byId("blankMcqAsWrongCheckbox").checked,
+        overwriteExisting: byId("overwriteExistingCheckbox").checked,
+        fillStudentRows: byId("fillStudentRowsCheckbox").checked,
+        fillFullRows: byId("fillFullRowsCheckbox").checked,
+        fillStatsRows: byId("fillStatsRowsCheckbox").checked,
+        keepDetailedChapter: byId("keepDetailedChapterCheckbox").checked,
+        fillValueMode: byId("fillValueModeSelect").value,
+        chapterMatchMode: byId("chapterMatchModeSelect").value,
+        ambiguousMode: byId("ambiguousModeSelect").value
+      };
+    }
+
+    function extractAllSourceData(sourceWorkbook, options, rules) {
+      const assessmentSheetNames = parseListInput(byId("assessmentSheetNamesInput").value);
+      const dailySheetNames = parseListInput(byId("dailySheetNamesInput").value);
+
+      const allSourceRows = [];
+      const allItemAuditRows = [];
+      const logs = [];
+
+      logs.push("Source workbook sheets: " + sourceWorkbook.SheetNames.join(", "));
+      logs.push("Assessment sheets requested: " + assessmentSheetNames.join(", "));
+
+      for (const sheetName of assessmentSheetNames) {
+        const result = extractAssessmentSheet(
+          sourceWorkbook,
+          sheetName,
+          options,
+          rules
+        );
+
+        allSourceRows.push(...result.sourceRows);
+        allItemAuditRows.push(...result.itemAuditRows);
+        logs.push(...result.logs);
+      }
+
+      if (options.includeDailyMarks) {
+        logs.push("Optional daily marks sheets requested: " + dailySheetNames.join(", "));
+
+        for (const sheetName of dailySheetNames) {
+          const result = extractDailyMarksSheet(
+            sourceWorkbook,
+            sheetName,
+            options,
+            rules
+          );
+
+          allSourceRows.push(...result.sourceRows);
+          allItemAuditRows.push(...result.itemAuditRows);
+          logs.push(...result.logs);
+        }
+      } else {
+        logs.push("Optional daily marks extraction: disabled.");
+      }
+
+      allSourceRows.sort((a, b) => {
+        return (
+          String(a["Assessment"]).localeCompare(String(b["Assessment"])) ||
+          String(a["Class"]).localeCompare(String(b["Class"])) ||
+          Number(a["Number"]) - Number(b["Number"]) ||
+          String(a["Chapter"]).localeCompare(String(b["Chapter"]))
+        );
+      });
+
+      return {
+        sourceRows: allSourceRows,
+        itemAuditRows: allItemAuditRows,
+        logs
+      };
+    }
+
+    function renderTable(containerId, rows, headers, maxRows) {
+      const container = byId(containerId);
+      container.innerHTML = "";
+
+      if (!rows || rows.length === 0) {
+        container.textContent = "沒有資料可顯示。";
+        return;
+      }
+
+      const wrap = document.createElement("div");
+      wrap.className = "table-wrap";
+
+      const table = document.createElement("table");
+
+      const thead = document.createElement("thead");
+      const headTr = document.createElement("tr");
+
+      for (const header of headers) {
+        const th = document.createElement("th");
+        th.textContent = header;
+        headTr.appendChild(th);
+      }
+
+      thead.appendChild(headTr);
+      table.appendChild(thead);
+
+      const tbody = document.createElement("tbody");
+
+      for (const row of rows.slice(0, maxRows)) {
+        const tr = document.createElement("tr");
+
+        for (const header of headers) {
+          const td = document.createElement("td");
+          td.textContent =
+            row[header] === null || row[header] === undefined
+              ? ""
+              : String(row[header]);
+          tr.appendChild(td);
+        }
+
+        tbody.appendChild(tr);
+      }
+
+      table.appendChild(tbody);
+      wrap.appendChild(table);
+      container.appendChild(wrap);
+
+      if (rows.length > maxRows) {
+        const p = document.createElement("p");
+        p.className = "hint";
+        p.textContent =
+          "只顯示前 " +
+          maxRows +
+          " 行；完整資料請下載 CSV。總行數：" +
+          rows.length +
+          "。";
+        container.appendChild(p);
+      }
+    }
+
+    function renderAll() {
+      byId("downloadCard").classList.remove("hidden");
+      byId("targetMappingCard").classList.remove("hidden");
+      byId("fillAuditCard").classList.remove("hidden");
+      byId("sourceSummaryCard").classList.remove("hidden");
+      byId("sourceItemAuditCard").classList.remove("hidden");
+      byId("logCard").classList.remove("hidden");
+
+      renderTable(
+        "targetMappingPreview",
+        state.targetMappingRows,
+        TARGET_MAPPING_HEADERS,
+        160
+      );
+
+      renderTable(
+        "fillAuditPreview",
+        state.fillAuditRows,
+        FILL_AUDIT_HEADERS,
+        220
+      );
+
+      renderTable(
+        "sourceSummaryPreview",
+        state.sourceSummaryRows,
+        SOURCE_SUMMARY_HEADERS,
+        160
+      );
+
+      renderTable(
+        "sourceItemAuditPreview",
+        state.sourceItemAuditRows,
+        SOURCE_ITEM_AUDIT_HEADERS,
+        160
+      );
+
+      byId("logBox").textContent =
+        state.logs.length > 0 ? state.logs.join("\n") : "沒有處理紀錄。";
+    }
+
+    function makeFilledWorkbookArrayBuffer(workbook) {
+      if (!workbook.Workbook) {
+        workbook.Workbook = {};
+      }
+
+      workbook.Workbook.CalcPr = {
+        calcMode: "auto",
+        fullCalcOnLoad: true
+      };
+
+      return XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+        compression: true,
+        cellStyles: true
+      });
+    }
+
+    function baseFileName(filename) {
+      return clean(filename).replace(/\.[^.]+$/, "");
+    }
+
+    byId("runButton").addEventListener("click", async () => {
+      resetStateOnly();
+
+      const sourceFile = byId("sourceFileInput").files && byId("sourceFileInput").files[0];
+      const targetFile = byId("targetFileInput").files && byId("targetFileInput").files[0];
+
+      if (!sourceFile) {
+        setStatus("請先選擇 source workbook：26-27 6S marks.xlsx。", "warn");
+        return;
+      }
+
+      if (!targetFile) {
+        setStatus("請先選擇 target workbook：5S Ch test result (25-26).xlsx。", "warn");
+        return;
+      }
+
+      if (typeof XLSX === "undefined") {
+        setStatus("未能載入 SheetJS library。請檢查 CDN 或網絡設定。", "error");
+        return;
+      }
+
+      setStatus("正在讀取兩個 Excel，抽取 source assessment，並填入 target workbook……");
+
+      try {
+        state.sourceFileName = sourceFile.name;
+        state.targetFileName = targetFile.name;
+
+        const options = readOptions();
+        const rules = parseNormalisationRules(byId("normalisationRulesInput").value);
+        const manualMappings = parseManualMappings(byId("manualMappingInput").value);
+        const studentAliases = parseStudentAliases(byId("studentAliasInput").value);
+
+        const sourceWorkbook = await readWorkbookFromFile(sourceFile);
+        const targetWorkbook = await readWorkbookFromFile(targetFile);
+
+        const sourceResult = extractAllSourceData(sourceWorkbook, options, rules);
+
+        state.sourceSummaryRows = sourceResult.sourceRows;
+        state.sourceItemAuditRows = sourceResult.itemAuditRows;
+        state.logs.push(...sourceResult.logs);
+
+        if (state.sourceSummaryRows.length === 0) {
+          throw new Error("Source extraction produced zero rows. Please check assessment sheet names and source format.");
+        }
+
+        const sourceIndex = buildSourceIndex(state.sourceSummaryRows);
+
+        state.logs.push("Source student names indexed: " + sourceIndex.byName.size + ".");
+        state.logs.push("Source assessment/chapter full-mark definitions: " + sourceIndex.fullDefs.length + ".");
+        state.logs.push("Manual mappings loaded: " + manualMappings.length + ".");
+        state.logs.push("Chapter normalisation rules loaded: " + rules.length + ".");
+        state.logs.push("Student aliases loaded: " + studentAliases.size + ".");
+
+        const fillResult = fillTargetWorkbook(
+          targetWorkbook,
+          sourceIndex,
+          options,
+          rules,
+          manualMappings,
+          studentAliases
+        );
+
+        state.targetMappingRows = fillResult.targetMappingRows;
+        state.fillAuditRows = fillResult.fillAuditRows;
+        state.logs.push(...fillResult.logs);
+
+        state.sourceSummaryCsv = rowsToCsv(
+          state.sourceSummaryRows,
+          SOURCE_SUMMARY_HEADERS
+        );
+
+        state.sourceItemAuditCsv = rowsToCsv(
+          state.sourceItemAuditRows,
+          SOURCE_ITEM_AUDIT_HEADERS
+        );
+
+        state.targetMappingCsv = rowsToCsv(
+          state.targetMappingRows,
+          TARGET_MAPPING_HEADERS
+        );
+
+        state.fillAuditCsv = rowsToCsv(
+          state.fillAuditRows,
+          FILL_AUDIT_HEADERS
+        );
+
+        state.filledWorkbook = targetWorkbook;
+        state.filledWorkbookArrayBuffer = makeFilledWorkbookArrayBuffer(targetWorkbook);
+
+        renderAll();
+
+        const filledCount = state.fillAuditRows.filter((row) => row["Action"] === "FILLED").length;
+        const skippedCount = state.fillAuditRows.filter((row) => row["Action"] === "SKIPPED").length;
+        const unresolvedColumns = state.targetMappingRows.filter((row) => {
+          const status = lowerClean(row["Match Status"]);
+          return status.includes("no_source") || status.includes("no_target") || status.includes("ambiguous");
+        }).length;
+
+        const statusType =
+          unresolvedColumns > 0 || skippedCount > 0 ? "warn" : "ok";
+
+        setStatus(
+          "完成。\n\n" +
+            "Source summary rows: " +
+            state.sourceSummaryRows.length +
+            "\n" +
+            "Source item audit rows: " +
+            state.sourceItemAuditRows.length +
+            "\n" +
+            "Target column mapping rows: " +
+            state.targetMappingRows.length +
+            "\n" +
+            "Filled audit rows: " +
+            state.fillAuditRows.length +
+            "\n" +
+            "Filled cells: " +
+            filledCount +
+            "\n" +
+            "Skipped cells recorded: " +
+            skippedCount +
+            "\n" +
+            "Unresolved / ambiguous target columns: " +
+            unresolvedColumns +
+            "\n\n" +
+            "請下載 filled Excel，同時建議下載 fill audit CSV 及 target column mapping CSV 檢查。",
+          statusType
+        );
+      } catch (error) {
+        console.error(error);
+        setStatus("處理失敗：\n" + error.message, "error");
+      }
+    });
+
+    byId("downloadExcelButton").addEventListener("click", () => {
+      if (!state.filledWorkbookArrayBuffer) {
+        setStatus("尚未產生 filled workbook。請先按一鍵處理。", "warn");
+        return;
+      }
+
+      const filename =
+        baseFileName(state.targetFileName || "5S Ch test result (25-26)") +
+        "_filled_from_26-27_6S_marks.xlsx";
+
+      downloadArrayBuffer(filename, state.filledWorkbookArrayBuffer);
+    });
+
+    byId("downloadFillAuditButton").addEventListener("click", () => {
+      if (!state.fillAuditCsv) {
+        setStatus("尚未產生 fill audit CSV。", "warn");
+        return;
+      }
+
+      downloadTextFile("fill_audit.csv", state.fillAuditCsv);
+    });
+
+    byId("downloadSourceSummaryButton").addEventListener("click", () => {
+      if (!state.sourceSummaryCsv) {
+        setStatus("尚未產生 source chapter summary CSV。", "warn");
+        return;
+      }
+
+      downloadTextFile(
+        "source_assessment_chapter_summary.csv",
+        state.sourceSummaryCsv
+      );
+    });
+
+    byId("downloadTargetMappingButton").addEventListener("click", () => {
+      if (!state.targetMappingCsv) {
+        setStatus("尚未產生 target column mapping CSV。", "warn");
+        return;
+      }
+
+      downloadTextFile(
+        "target_column_mapping.csv",
+        state.targetMappingCsv
+      );
+    });
+
+    byId("downloadSourceItemAuditButton").addEventListener("click", () => {
+      if (!state.sourceItemAuditCsv) {
+        setStatus("尚未產生 source item audit CSV。", "warn");
+        return;
+      }
+
+      downloadTextFile(
+        "source_item_audit.csv",
+        state.sourceItemAuditCsv
+      );
+    });
+
+    byId("resetButton").addEventListener("click", () => {
+      byId("sourceFileInput").value = "";
+      byId("targetFileInput").value = "";
+      byId("assessmentSheetNamesInput").value = "1st assessment,2nd assessment,3rd assessment";
+      byId("dailySheetNamesInput").value = "6S daily marks,5S daily marks";
+      byId("targetSheetNamesInput").value = "";
+
+      byId("fillValueModeSelect").value = "score";
+      byId("chapterMatchModeSelect").value = "exactThenCompatible";
+      byId("ambiguousModeSelect").value = "largestFullLatest";
+
+      byId("includeMcqCheckbox").checked = true;
+      byId("includeSqCheckbox").checked = true;
+      byId("skipItemsWithNoStudentDataCheckbox").checked = true;
+      byId("includeDailyMarksCheckbox").checked = false;
+      byId("absentAsZeroCheckbox").checked = false;
+      byId("unknownMcqAsWrongCheckbox").checked = true;
+      byId("blankMcqAsWrongCheckbox").checked = true;
+      byId("overwriteExistingCheckbox").checked = false;
+      byId("fillStudentRowsCheckbox").checked = true;
+      byId("fillFullRowsCheckbox").checked = true;
+      byId("fillStatsRowsCheckbox").checked = false;
+      byId("keepDetailedChapterCheckbox").checked = true;
+
+      resetStateOnly();
+      setStatus("已重設。請重新選擇兩個 Excel 檔案。");
+    });
+  </script>
+</body>
+</html>
